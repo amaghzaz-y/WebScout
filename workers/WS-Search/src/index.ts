@@ -1,6 +1,6 @@
 import { Context, Hono } from 'hono'
 import { ofetch } from 'ofetch'
-import WebScoutEngine from "webscout-core"
+import WebScoutEngine from "webscout"
 import { languageStorage, indexStorage } from "database"
 
 
