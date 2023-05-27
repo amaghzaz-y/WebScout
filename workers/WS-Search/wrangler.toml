@@ -1,0 +1,11 @@
+name = "ws-api"
+compatibility_date = "2023-05-27"
+main = "src/index.ts"
+kv_namespaces = [
+  { binding = "WSKV", id = "8963aa3a80064b9a9fc3bfc7f6cfa8ed" }
+]
+
+[env.production]
+kv_namespaces = [
+  { binding = "WSKV", id = "298dea25699542a18ba5f66941deb13f" }
+]
