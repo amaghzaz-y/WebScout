@@ -1,7 +1,6 @@
 import { Context, Hono } from 'hono'
-import { ofetch } from 'ofetch'
 import WebScoutEngine from "webscout"
-import { languageStorage, indexStorage } from "database"
+import { languageStorage, indexStorage, getIndex, getTokenizer } from "database"
 
 
 
@@ -12,25 +11,7 @@ const app = new Hono()
 app.get('/', (c) => c.text('Hello Hono!'))
 
 
-const getTokenizer = async (language: string): Promise<Uint8Array> => {
-	// url to get language packs
-	const lpURL = `https://pub-f198fbbd901d46eca8161360a537f010.r2.dev/packs/${language}.pack`
-	let hasItem = await languageStorage.hasItem(language)
-	if (!hasItem) {
-		const file = await ofetch(lpURL, { responseType: 'blob' })
-		const langpack = new Uint8Array(await file.arrayBuffer())
-		await languageStorage.setItemRaw(language, langpack)
-		return langpack
-	}
-	const langpack: Uint8Array = await languageStorage.getItemRaw(language)
-	return langpack
-}
 
-const getIndex = async (clientID: string, projectID: string): Promise<Uint8Array | undefined> => {
-	const key = `${clientID}:${projectID}`
-	const index: Uint8Array | undefined = await indexStorage.getItemRaw(key)
-	return index
-}
 
 interface searchReqSchema {
 	clientID: string,
