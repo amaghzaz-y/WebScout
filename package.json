@@ -1,4 +1,8 @@
 {
+  "name": "ws",
+  "displayName": "WebScout SSE",
+  "author": "Yassine AMAGHZAZ",
+  "homepage": "www.webscout.cc",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -8,7 +12,6 @@
     "@turbo/gen": "^1.9.7",
     "turbo": "^1.9.7"
   },
-  "name": "ws",
   "packageManager": "npm@9.6.4",
   "workspaces": [
     "workers/*",
