@@ -1,6 +1,6 @@
 import { Context, Hono } from 'hono'
 import { WebScoutEngine, InitEngine } from "webscout"
-import { KV, DB } from "database"
+import { KV } from "database"
 import { z } from "zod";
 
 InitEngine()

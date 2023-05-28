@@ -1,4 +1,3 @@
-import init from "../pkg/webscout";
 import { initSync, WebScout } from "../pkg/webscout";
 import wasm from "../pkg/webscout_bg.wasm"
 
