@@ -16,5 +16,8 @@
   "workspaces": [
     "workers/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "zod": "^3.21.4"
+  }
 }

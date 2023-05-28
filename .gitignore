@@ -12,7 +12,7 @@ coverage
 .next/
 out/
 build
-
+wrangler.toml
 # misc
 .DS_Store
 *.pem
@@ -34,3 +34,4 @@ yarn-error.log*
 
 # vercel
 .vercel
+*wrangler.toml
