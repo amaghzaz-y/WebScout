@@ -1,6 +1,6 @@
 import { Context, Hono } from 'hono'
 import WebScoutEngine from "webscout"
-import { getIndex, getTokenizer } from "database"
+import { KV, DB } from "database"
 import { z } from "zod";
 
 const searchSchema = z.object(
@@ -24,9 +24,8 @@ const indexSchema = z.object(
 
 const app = new Hono()
 
-
-
-const searchHandler = async (c: Context) => {
+const searcherHandler = async (c: Context) => {
+	const kv = new KV()
 	const body = await c.req.json();
 	let content: z.infer<typeof searchSchema>
 	try {
@@ -34,14 +33,14 @@ const searchHandler = async (c: Context) => {
 	} catch {
 		return c.text("error parsing request")
 	}
-	const tokenizer = await getTokenizer(body.language);
-	const index = await getIndex(body.clientID, body.projectID);
-	
+	const tokenizer = await kv.getTokenizer(body.language);
+	const index = await kv.getIndex(body.clientID, body.projectID, 0);
+
 	if (index == undefined) {
 		c.status(502);
 		return c.text("error: index not found");
 	}
-	
+
 	const ws = new WebScoutEngine(index, tokenizer, body.language)
 	let results: string
 	if (body.type == 'all') {
@@ -53,6 +52,17 @@ const searchHandler = async (c: Context) => {
 	return c.json(JSON.parse(results))
 }
 
+const indexerHandler = async (c: Context) => {
+	const body = await c.req.json();
+	let content: z.infer<typeof indexSchema>
+	try {
+		content = indexSchema.parse(body)
+	} catch {
+		return c.text("error parsing request")
+	}
+	const tokenizer = await kv.getTokenizer(body.language);
+	const index = await kv.getIndex(body.clientID, body.projectID);
+}
 app.post('/search', searchHandler)
 
 export default app
