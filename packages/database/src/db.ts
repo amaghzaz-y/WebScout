@@ -1,6 +1,6 @@
-import { PrismaClient, User } from '@prisma/client'
-class DB {
-	prisma: PrismaClient
+import { PrismaClient, Project, User } from '@prisma/client'
+export default class DB {
+	private prisma: PrismaClient
 	constructor() {
 		this.prisma = new PrismaClient()
 	}
@@ -19,5 +19,13 @@ class DB {
 			}
 		})
 		return user
+	}
+	async findAllProjectByUserID(userID: string): Promise<Project[]> {
+		const projects = await this.prisma.project.findMany({
+			where: {
+				userId: userID
+			}
+		})
+		return projects
 	}
 }
