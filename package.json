@@ -15,7 +15,8 @@
   "packageManager": "npm@9.6.4",
   "workspaces": [
     "workers/*",
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "dependencies": {
     "zod": "^3.21.4"

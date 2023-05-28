@@ -1,4 +1,6 @@
 import { Context, Hono } from 'hono'
+import { HTTPException } from 'hono/http-exception'
+
 import { WebScoutEngine, InitEngine } from "webscout"
 import { KV } from "database"
 import { z } from "zod";
@@ -8,8 +10,8 @@ InitEngine()
 const searchSchema = z.object(
 	{
 		userID: z.string(),
-		projectID: z.string().max(2),
-		language: z.string(),
+		projectID: z.string(),
+		language: z.string().max(2),
 		query: z.string(),
 		limit: z.number()
 	}
@@ -28,13 +30,13 @@ const indexSchema = z.object(
 const app = new Hono()
 
 const searcherHandler = async (c: Context) => {
-	const kv = new KV()
+	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof searchSchema>
 	try {
 		content = searchSchema.parse(body)
-	} catch {
-		return c.text("error parsing request")
+	} catch (e) {
+		throw new HTTPException(400, { message: 'Malformed Request' })
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
 	const index = await kv.getIndex(content.userID, content.projectID, 0);
@@ -51,13 +53,13 @@ const searcherHandler = async (c: Context) => {
 }
 
 const indexerHandler = async (c: Context) => {
-	const kv = new KV()
+	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof indexSchema>
 	try {
 		content = indexSchema.parse(body)
 	} catch {
-		return c.text("error parsing request")
+		throw new HTTPException(400, { message: 'Malformed Request' })
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
 	const index = await kv.getIndex(content.userID, content.projectID, 0) as Uint8Array | null;
@@ -72,8 +74,9 @@ const indexerHandler = async (c: Context) => {
 	return c.text('error indexing file!')
 }
 
-app.post('/search', searcherHandler)
-app.post('/index', indexerHandler)
+app.get('/api', (c) => { return c.text("ws-api says hello !") })
+app.post('/api/search', searcherHandler)
+app.post('/api/index', indexerHandler)
 
 
 export default app

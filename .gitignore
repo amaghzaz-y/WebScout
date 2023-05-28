@@ -16,7 +16,7 @@ wrangler.toml
 # misc
 .DS_Store
 *.pem
-
+.wrangler
 # debug
 npm-debug.log*
 yarn-debug.log*
