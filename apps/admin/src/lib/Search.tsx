@@ -1,7 +1,5 @@
 import { Button, Stack, TextField, Typography } from "@suid/material"
-import { ofetch } from "ofetch"
-import { createSignal } from "solid-js"
-import { number } from "zod"
+import { createResource, createSignal } from "solid-js"
 
 interface SearchRequest {
 	userID: string
@@ -12,27 +10,30 @@ interface SearchRequest {
 }
 
 const Search = () => {
-	let userID: string, projectID: string, language: string, query: string
+	let userID: string, projectID: string, language: string
+	const [query, setQuery] = createSignal('');
 	const [result, setResult] = createSignal('')
-	const submit = (e: Event) => {
+	const submit = async () => {
 		const req: SearchRequest = {
 			userID: userID,
 			projectID: projectID,
 			language: language,
-			query: query,
+			query: query(),
 			limit: 100
 		}
-		console.log()
-		ofetch('http://127.0.0.1:8787/api/search', {
+		const res = await fetch('http://127.0.0.1:3400/api/search', {
 			method: 'POST',
-			body: req,
 			mode: 'no-cors',
-			responseType: 'text'
-		}).then((v) => {
-			console.log(v)
-			setResult(v)
-		}).catch(e => { console.log(e) })
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(req)
+		})
+		const data = await res.text()
+		console.log(data)
+		return data
 	}
+	const [data] = createResource(query, submit)
 	return (
 		<Stack gap={1}>
 			<Typography variant="h4">Search</Typography>
@@ -41,17 +42,17 @@ const Search = () => {
 				<TextField label="User ID" onChange={(e) => (userID = e.target.value)} />
 				<TextField label="Project ID" onChange={(e) => (projectID = e.target.value)} />
 				<TextField label="Language" placeholder="en" onChange={(e) => (language = e.target.value)} />
-				<TextField label="Query" onChange={(e) => (query = e.target.value)} />
+				<TextField label="Query" value={query()} onChange={(e) => setQuery(e.target.value)} />
 				<TextField type="number" label="Limit" value={20} />
 			</Stack>
-			<Button onClick={submit} variant="contained" >Search</Button>
+			{/* <Button onClick={submit} variant="contained" >Search</Button> */}
 			<TextField
 				id="outlined-textarea"
 				disabled
 				multiline
 				variant="outlined"
 				rows={10}
-				value={result()}
+				value={data()}
 			/>
 		</Stack>
 	)

@@ -29,14 +29,22 @@ const indexSchema = z.object(
 
 const app = new Hono()
 
-const searcherHandler = async (c: Context) => {
+app.get('/api', async (c) => { return c.text("ws-api says hello !") })
+
+app.post('/api/search', async (c: Context) => {
 	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof searchSchema>
 	try {
 		content = searchSchema.parse(body)
 	} catch (e) {
-		throw new HTTPException(400, { message: 'Malformed Request' })
+		return new Response('Malformed Request', {
+			status: 400,
+			headers: {
+				'Content-Type': 'text/plain',
+			},
+		})
+		// throw new HTTPException(400, { message: 'Malformed Request' })
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
 	const index = await kv.getIndex(content.userID, content.projectID, 0);
@@ -49,10 +57,16 @@ const searcherHandler = async (c: Context) => {
 	const ws = new WebScoutEngine(index, tokenizer, content.language)
 	// return Object
 	let results = ws.Search(content.query)
-	return c.json(results)
-}
+	return new Response(results, {
+		status: 200,
+		headers: {
+			'Content-Type': 'text/plain'
+		}
+	})
+})
 
-const indexerHandler = async (c: Context) => {
+
+app.post('/api/index', async (c: Context) => {
 	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof indexSchema>
@@ -72,11 +86,7 @@ const indexerHandler = async (c: Context) => {
 	}
 	c.status(502)
 	return c.text('error indexing file!')
-}
-
-app.get('/api', (c) => { return c.text("ws-api says hello !") })
-app.post('/api/search', searcherHandler)
-app.post('/api/index', indexerHandler)
+})
 
 
 export default app
