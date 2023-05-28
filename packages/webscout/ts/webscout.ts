@@ -1,10 +1,14 @@
+import init from "../pkg/webscout";
 import { initSync, WebScout } from "../pkg/webscout";
 import wasm from "../pkg/webscout_bg.wasm"
 
-export default class WebScoutEngine {
+export const InitEngine = () => {
+	initSync(wasm);
+}
+
+export class WebScoutEngine {
 	webscout?: WebScout;
 	constructor(index: Uint8Array | null, tokenizer: Uint8Array, language: string) {
-		initSync(wasm);
 		this.webscout = new WebScout(language);
 		if (index !== null) { this.webscout.deserialize_index(index); }
 		this.webscout.deserialize_tokenizer(tokenizer);
@@ -17,9 +21,11 @@ export default class WebScoutEngine {
 	Tokenize(word: string): string | undefined {
 		return this.webscout?.tokenize(word);
 	}
+	// return JSON
 	SearchAll(query: string): any {
 		return JSON.parse(this.webscout?.search_all(query));
 	}
+	// return JSON
 	Search(query: string): any {
 		return JSON.parse(this.webscout?.search_above_average(query));
 	}
