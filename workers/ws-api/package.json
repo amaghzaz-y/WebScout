@@ -2,7 +2,7 @@
   "name": "ws-api",
   "scripts": {
     "dev": "wrangler dev src/index.ts --port 3400",
-    "dev-remote": "wrangler dev src/index.ts --remote --port 3400",
+    "dev-remote": "wrangler dev src/index.ts --remote",
     "deploy": "wrangler deploy --minify src/index.ts"
   },
   "dependencies": {
