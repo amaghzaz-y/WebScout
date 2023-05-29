@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch'
-import { MetaData } from "./types";
+import { IndexMeta } from "./types";
 
 export default class KV {
 	private KV: KVNamespace
@@ -33,9 +33,9 @@ export default class KV {
 		await this.KV.put(key, index)
 	}
 
-	async Meta(userID: string, projectID: string): Promise<MetaData | null> {
+	async Meta(userID: string, projectID: string): Promise<IndexMeta | null> {
 		const key = `meta:${userID}:${projectID}`
-		const meta: MetaData | null = await this.KV.get(key, 'json')
+		const meta: IndexMeta | null = await this.KV.get(key, 'json')
 		return meta
 	}
 }
