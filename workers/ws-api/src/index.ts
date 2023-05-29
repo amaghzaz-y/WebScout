@@ -5,6 +5,7 @@ import { WebScoutEngine, InitEngine } from "webscout"
 import { KV } from "database"
 import { z } from "zod";
 
+// instantiate wasm
 InitEngine()
 
 const searchSchema = z.object(
@@ -29,9 +30,9 @@ const indexSchema = z.object(
 
 const app = new Hono()
 
-app.get('/api', async (c) => { return c.text("ws-api says hello !") })
+app.get('/', async (c) => { return c.text("ws-api says hello !") })
 
-app.post('/api/search', async (c: Context) => {
+app.post('/search', async (c: Context) => {
 	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof searchSchema>
@@ -44,7 +45,6 @@ app.post('/api/search', async (c: Context) => {
 				'Content-Type': 'text/plain',
 			},
 		})
-		// throw new HTTPException(400, { message: 'Malformed Request' })
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
 	const index = await kv.getIndex(content.userID, content.projectID, 0);
@@ -57,16 +57,11 @@ app.post('/api/search', async (c: Context) => {
 	const ws = new WebScoutEngine(index, tokenizer, content.language)
 	// return Object
 	let results = ws.Search(content.query)
-	return new Response(results, {
-		status: 200,
-		headers: {
-			'Content-Type': 'text/plain'
-		}
-	})
+	return c.json(results)
 })
 
 
-app.post('/api/index', async (c: Context) => {
+app.post('/index', async (c: Context) => {
 	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
 	let content: z.infer<typeof indexSchema>
