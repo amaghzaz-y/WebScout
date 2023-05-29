@@ -9,8 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.14.1",
-    "prisma": "^4.14.1"
+    "workers-qb": "^0.1.11"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
