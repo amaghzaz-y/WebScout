@@ -50,7 +50,7 @@ app.post('/search', async (c: Context) => {
 	const index = await kv.getIndex(content.userID, content.projectID, 0);
 
 	if (index == undefined) {
-		c.status(502);
+		c.status(200);
 		return c.text("error: index not found");
 	}
 

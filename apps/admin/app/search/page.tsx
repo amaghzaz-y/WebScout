@@ -1,55 +1,130 @@
-'use client';
-import { Button, TextField } from "@mui/material"
-import useSWR from "swr";
+"use client"
+import { Button, TextField } from "@mui/material";
+import { useState } from "react";
+
+interface SearchQuery {
+	userID: string;
+	projectID: string;
+	language: string;
+	query: string;
+	limit: string;
+}
 
 export default function Page() {
-	const { result, isLoading, isError } = useSearch({
-		userID: 'yassine',
-		porjectID: 'duck',
-		language: 'en',
-		query: 'beauty',
-		limit: 2
-	})
+	const [state, setState] = useState({
+		userID: "",
+		projectID: "",
+		language: "",
+		query: "",
+		limit: "",
+		result: ""
+	});
+
+	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+		setState((prevState) => ({
+			...prevState,
+			[name]: value
+		}));
+	};
+
+	const handleSearch = async () => {
+		const body = {
+			userID: state.userID,
+			projectID: state.projectID,
+			language: state.language,
+			query: state.query,
+			limit: parseInt(state.limit)
+		};
+
+		try {
+			const response = await fetch("https://api.webscout.cc/search", {
+				method: "POST",
+				mode: "no-cors",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(body)
+			});
+			const result = await response.text();
+
+			if (result.length > 0) {
+				setState((prevState) => ({
+					...prevState,
+					result: result
+				}));
+				console.log(body)
+				console.log(result);
+			} else {
+				setState((prevState) => ({
+					...prevState,
+					result: "empty results"
+				}));
+				console.log(body)
+				console.log("empty");
+			}
+		} catch (error) {
+			setState((prevState) => ({
+				...prevState,
+				result: String(error)
+			}));
+		}
+	};
+
 	return (
 		<div className="w-full flex flex-col gap-2 p-3">
-			<div>
-				Search page
-			</div>
-			<TextField label='User ID' variant='outlined' />
-			<TextField label='Project ID' variant='outlined' />
-			<TextField label='Language' variant='outlined' />
-			<TextField label='Query' variant='outlined' />
-			<TextField label='Limit' type="number" variant='outlined' />
-			<Button className="my-1" variant="outlined">Search</Button>
-			<TextField label="Results" value={result} rows={4} multiline />
-		</div >
-	)
-
-}
-
-interface searchQuery {
-	userID: string
-	porjectID: string
-	language: string
-	query: string
-	limit: number
-}
-
-function useSearch(query: searchQuery) {
-	const fetcher = () => fetch('localhost:3400/api/search', {
-		method: 'POST',
-		mode: 'no-cors',
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify(query),
-	}).then(res => res.text())
-
-	const { data, error, isLoading } = useSWR('/api/search', fetcher)
-
-	return {
-		result: data,
-		isLoading,
-		isError: error
-	}
+			<div>Search page</div>
+			<TextField
+				label="User ID"
+				variant="outlined"
+				name="userID"
+				value={state.userID}
+				onChange={handleChange}
+				
+			/>
+			<TextField
+				label="Project ID"
+				variant="outlined"
+				name="projectID"
+				value={state.projectID}
+				onChange={handleChange}
+				
+			/>
+			<TextField
+				label="Language"
+				variant="outlined"
+				name="language"
+				value={state.language}
+				onChange={handleChange}
+				
+			/>
+			<TextField
+				label="Query"
+				variant="outlined"
+				name="query"
+				value={state.query}
+				onChange={handleChange}
+				
+			/>
+			<TextField
+				label="Limit"
+				type="number"
+				variant="outlined"
+				name="limit"
+				value={state.limit}
+				onChange={handleChange}
+				
+			/>
+			<Button className="my-1" variant="outlined" onClick={handleSearch}>
+				Search
+			</Button>
+			<TextField
+				label="Results"
+				value={state.result}
+				rows={4}
+				multiline
+				disabled
+			/>
+		</div>
+	);
 }
