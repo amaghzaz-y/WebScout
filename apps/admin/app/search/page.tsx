@@ -2,15 +2,7 @@
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 
-interface SearchQuery {
-	userID: string;
-	projectID: string;
-	language: string;
-	query: string;
-	limit: string;
-}
-
-export default function Page() {
+export default function SearchPage() {
 	const [state, setState] = useState({
 		userID: "",
 		projectID: "",
@@ -40,9 +32,9 @@ export default function Page() {
 		try {
 			const response = await fetch("https://api.webscout.cc/search", {
 				method: "POST",
-				mode: "no-cors",
+				mode: "cors",
 				headers: {
-					"Content-Type": "application/json"
+					"Content-Type": "application/json",
 				},
 				body: JSON.stringify(body)
 			});
@@ -80,7 +72,7 @@ export default function Page() {
 				name="userID"
 				value={state.userID}
 				onChange={handleChange}
-				
+
 			/>
 			<TextField
 				label="Project ID"
@@ -88,7 +80,7 @@ export default function Page() {
 				name="projectID"
 				value={state.projectID}
 				onChange={handleChange}
-				
+
 			/>
 			<TextField
 				label="Language"
@@ -96,7 +88,7 @@ export default function Page() {
 				name="language"
 				value={state.language}
 				onChange={handleChange}
-				
+
 			/>
 			<TextField
 				label="Query"
@@ -104,7 +96,7 @@ export default function Page() {
 				name="query"
 				value={state.query}
 				onChange={handleChange}
-				
+
 			/>
 			<TextField
 				label="Limit"
@@ -113,7 +105,7 @@ export default function Page() {
 				name="limit"
 				value={state.limit}
 				onChange={handleChange}
-				
+
 			/>
 			<Button className="my-1" variant="outlined" onClick={handleSearch}>
 				Search

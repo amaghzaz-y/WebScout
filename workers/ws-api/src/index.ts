@@ -1,6 +1,6 @@
 import { Context, Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
-
+import { cors } from 'hono/cors'
 import { WebScoutEngine, InitEngine } from "webscout"
 import { KV } from "database"
 import { z } from "zod";
@@ -29,6 +29,7 @@ const indexSchema = z.object(
 )
 
 const app = new Hono()
+app.use("/*", cors())
 
 app.get('/', async (c) => { return c.text("ws-api says hello !") })
 
