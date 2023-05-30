@@ -37,7 +37,6 @@ export default function IndexerPage() {
 				mode: "cors",
 				headers: {
 					"Content-Type": "application/json",
-					"Access-Control-Allow-Origin": "*",
 				},
 				body: JSON.stringify(body)
 			});
@@ -94,12 +93,14 @@ export default function IndexerPage() {
 				label="Body"
 				variant="outlined"
 				name="body"
+				rows={5}
+				multiline
 				value={state.body}
 				onChange={handleChange}
 
 			/>
 			<Button className="my-1" variant="outlined" onClick={handleIndex}>
-				Search
+				Submit
 			</Button>
 			<Snackbar open={openSuccess} autoHideDuration={2000}>
 				<Alert severity="success">Document Indexed Successfully</Alert>
