@@ -2,7 +2,6 @@ export interface IndexMeta {
 	userID: string
 	projectID: string
 	languages: string
-	indexCount: number
 	indexes: string[]
 	documents: number
 	size: number
