@@ -10,21 +10,27 @@ export interface IndexMeta {
 export interface User {
 	userID: string
 	email: string
-	name?: string
+	username?: string
 }
 
 export interface Project {
 	projectID: string
 	userID: string
-	name?: string
+	projectName?: string
 	createdAt: string
 }
 
 export interface Page {
 	pageID: string
 	projectID: string
-	title: string
+	pageTitle: string
 	url?: string
 	language?: string
 	tokens?: number
+}
+
+export interface PageStatus {
+	pageID: string
+	status: string
+	lastUpdate: string
 }
