@@ -33,6 +33,17 @@ export default class KV {
 		await this.KV.put(key, index)
 	}
 
+	async getUserJWT(userID: string): Promise<string | null> {
+		const key = `jwt:${userID}`
+		const jwt = await this.KV.get(key)
+		return jwt
+	}
+
+	async setUserJWT(userID: string, jwt: string) {
+		const key = `jwt:${userID}`
+		await this.KV.put(key, jwt)
+	}
+
 	async Meta(userID: string, projectID: string): Promise<IndexMeta | null> {
 		const key = `meta:${userID}:${projectID}`
 		const meta: IndexMeta | null = await this.KV.get(key, 'json')
