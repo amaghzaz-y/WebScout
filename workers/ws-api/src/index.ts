@@ -10,7 +10,6 @@ InitEngine()
 
 const searchSchema = z.object(
 	{
-		userID: z.string(),
 		projectID: z.string(),
 		language: z.string().max(2),
 		query: z.string(),
@@ -20,7 +19,6 @@ const searchSchema = z.object(
 
 const indexSchema = z.object(
 	{
-		userID: z.string(),
 		projectID: z.string(),
 		language: z.string().max(2),
 		title: z.string(),
@@ -29,6 +27,7 @@ const indexSchema = z.object(
 )
 
 const app = new Hono()
+
 app.use("/*", cors())
 
 app.get('/', async (c) => { return c.text("ws-api says hello !") })
@@ -52,7 +51,7 @@ app.post('/search', async (c: Context) => {
 		})
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
-	const index = await kv.getIndex(content.userID, content.projectID, 0);
+	const index = await kv.getIndex(content.projectID, 0);
 
 	if (index == undefined) {
 		c.status(200);
@@ -76,12 +75,12 @@ app.post('/index', async (c: Context) => {
 		throw new HTTPException(400, { message: 'Malformed Request' })
 	}
 	const tokenizer = await kv.getTokenizer(content.language);
-	const index = await kv.getIndex(content.userID, content.projectID, 0) as Uint8Array | null;
+	const index = await kv.getIndex(content.projectID, 0) as Uint8Array | null;
 	const ws = new WebScoutEngine(index, tokenizer, content.language)
 	ws.Index(content.title, content.body)
 	const idx = ws.ExportIndex()
 	if (idx !== null && idx !== undefined) {
-		await kv.setIndex(content.userID, content.projectID, 0, idx)
+		await kv.setIndex(content.projectID, 0, idx)
 		return c.text('indexed successfully')
 	}
 	c.status(502)

@@ -1,5 +1,4 @@
 import { ofetch } from 'ofetch'
-import { IndexMeta } from "./types";
 
 export default class KV {
 	private KV: KVNamespace
@@ -19,8 +18,8 @@ export default class KV {
 		return tokenizer
 	}
 
-	async getIndex(userID: string, projectID: string, indexID: number): Promise<Uint8Array | null> {
-		const key = `index:${userID}:${projectID}:${indexID}`
+	async getIndex(projectID: string, indexID: number): Promise<Uint8Array | null> {
+		const key = `index:${projectID}:${indexID}`
 		const file: ArrayBuffer | null = await this.KV.get(key, { cacheTtl: 600, type: 'arrayBuffer' })
 		if (file !== null) {
 			return new Uint8Array(file)
@@ -28,25 +27,8 @@ export default class KV {
 		return null
 	}
 
-	async setIndex(userID: string, projectID: string, indexID: number, index: Uint8Array) {
-		const key = `index:${userID}:${projectID}:${indexID}`
+	async setIndex(projectID: string, indexID: number, index: Uint8Array) {
+		const key = `index:${projectID}:${indexID}`
 		await this.KV.put(key, index)
-	}
-
-	async getUserJWT(userID: string): Promise<string | null> {
-		const key = `jwt:${userID}`
-		const jwt = await this.KV.get(key)
-		return jwt
-	}
-
-	async setUserJWT(userID: string, jwt: string) {
-		const key = `jwt:${userID}`
-		await this.KV.put(key, jwt)
-	}
-
-	async Meta(userID: string, projectID: string): Promise<IndexMeta | null> {
-		const key = `meta:${userID}:${projectID}`
-		const meta: IndexMeta | null = await this.KV.get(key, 'json')
-		return meta
 	}
 }
