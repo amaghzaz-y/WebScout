@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "kv",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -8,9 +8,6 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "workers-qb": "^0.1.11"
-  },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
     "typescript": "^5.0.4",

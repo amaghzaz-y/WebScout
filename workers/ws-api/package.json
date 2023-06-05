@@ -9,7 +9,8 @@
     "hono": "^3.2.2",
     "ofetch": "^1.0.1",
     "unstorage": "^1.6.1",
-    "webscout-core": "*"
+    "webscout-core": "*",
+    "kv": "*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",
