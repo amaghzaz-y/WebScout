@@ -32,10 +32,6 @@ app.use("/*", cors())
 
 app.get('/', async (c) => { return c.text("ws-api says hello !") })
 
-app.get('/migrate', async (c) => {
-
-})
-
 app.post('/search', async (c: Context) => {
 	const kv = new KV(c.env.WSKV)
 	const body = await c.req.json();
