@@ -1,8 +1,3 @@
-```
-npm install
-npm run dev
-```
+## WS-SPIDER
 
-```
-npm run deploy
-```
+a serverless automatic web crawler and scraper
