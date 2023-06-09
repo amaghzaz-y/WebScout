@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch'
-import { CrawledURL, MetaIndex, Page, Profile } from './types'
+import { CrawledURL, MetaIndex, Page, ParsedPage, Profile } from './types'
 
 export default class KV {
 	private KV: KVNamespace
@@ -70,6 +70,15 @@ export default class KV {
 	}
 	async getCrawledURL(projectID: string): Promise<CrawledURL> {
 		const key = `crawledurl:${projectID}`
+		const body = await this.KV.get(key)
+		return JSON.parse(body as string)
+	}
+	async setParsedPage(projectID: string, parsedPage: ParsedPage) {
+		const key = `parsedpage:${projectID}`
+		await this.KV.put(key, JSON.stringify(parsedPage))
+	}
+	async getParsedPage(projectID: string): Promise<ParsedPage> {
+		const key = `parsedpage:${projectID}`
 		const body = await this.KV.get(key)
 		return JSON.parse(body as string)
 	}

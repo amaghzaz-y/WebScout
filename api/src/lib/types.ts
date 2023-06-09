@@ -27,3 +27,8 @@ export interface CrawledURL {
 	resources: Set<string>
 }
 
+export interface ParsedPage {
+	projectID: string
+	resources: Set<string>
+}
+

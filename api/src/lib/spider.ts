@@ -4,15 +4,14 @@ import parseURL from 'parse-url'
 import { Page } from './types';
 import { nanoid } from 'nanoid';
 
-
-
 export default class Spider {
 
 	async Fetch(url: string): Promise<string | null> {
 		return await ofetch(url, { retry: 3, parseResponse: txt => txt })
 	}
 
-	async Parse(document: string): Promise<Page> {
+	async Parse(url: string): Promise<Page> {
+		let document = await this.Fetch(url) as string
 		let $ = cheerio.load(document)
 		let lang = $('html').attr('lang')
 		let title = $('title').text()
@@ -29,6 +28,7 @@ export default class Spider {
 			content: text
 		}
 	}
+
 	async Crawl(EntryURL: string): Promise<Set<string>> {
 		const body = await this.Fetch(EntryURL) as string
 		const hostname = parseURL(EntryURL).resource
