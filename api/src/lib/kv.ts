@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch'
-import { Page, PageMeta } from './types'
+import { MetaIndex, Page, Profile } from './types'
 
 export default class KV {
 	private KV: KVNamespace
@@ -46,8 +46,22 @@ export default class KV {
 		return JSON.parse(body as string)
 	}
 
-	async setPageMeta(projectID: string, pageMeta: PageMeta) {
-		const key = `pageMeta:${projectID}:${pageMeta.pageID}`
-		await this.KV.put(key, JSON.stringify(pageMeta))
+	async setMetaIndex(mindex: MetaIndex) {
+		const key = `metaindex:${mindex.projectID}`
+		await this.KV.put(key, JSON.stringify(mindex))
+	}
+
+	async getMetaIndex(projectID: string): Promise<MetaIndex | null> {
+		const key = `metaindex:${projectID}`
+		const body = await this.KV.get(key)
+		return JSON.parse(body as string)
+	}
+	async getProfile() {
+		const key = `profile`
+		await this.KV.get(key)
+	}
+	async setProfile(profile: Profile) {
+		const key = `profile`
+		await this.KV.put(key, JSON.stringify(profile))
 	}
 }

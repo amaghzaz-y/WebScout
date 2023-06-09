@@ -1,3 +1,8 @@
+export interface Profile {
+	name: string
+	projects: string[]
+}
+
 export interface PageMeta {
 	pageID: string
 	url: string
@@ -10,5 +15,10 @@ export interface Page {
 	title: string
 	language?: string
 	content: string
+}
+
+export interface MetaIndex {
+	projectID: string
+	pages: PageMeta[]
 }
 
