@@ -6,6 +6,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "hono": "^3.2.2",
+    "parse-url": "^8.1.0",
     "zod": "^3.21.4"
   },
   "devDependencies": {

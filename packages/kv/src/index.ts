@@ -1,10 +1,13 @@
 import { ofetch } from 'ofetch'
+import { Page, PageMeta } from './types'
 
 export default class KV {
 	private KV: KVNamespace
+
 	constructor(kvBinding: KVNamespace) {
 		this.KV = kvBinding
 	}
+
 	async getTokenizer(language: string): Promise<Uint8Array> {
 		const lpURL = `https://pub-f198fbbd901d46eca8161360a537f010.r2.dev/packs/${language}.pack`
 		let file: ArrayBuffer | null = await this.KV.get(`language:${language}`, { cacheTtl: 21600, type: 'arrayBuffer' })
@@ -30,5 +33,21 @@ export default class KV {
 	async setIndex(projectID: string, indexID: number, index: Uint8Array) {
 		const key = `index:${projectID}:${indexID}`
 		await this.KV.put(key, index)
+	}
+
+	async setPage(projectID: string, page: Page) {
+		const key = `page:${projectID}:${page.pageID}`
+		await this.KV.put(key, JSON.stringify(page))
+	}
+
+	async getPage(projectID: string, pageID: string): Promise<Page | null> {
+		const key = `page:${projectID}:${pageID}`
+		const body = await this.KV.get(key)
+		return JSON.parse(body as string)
+	}
+
+	async setPageMeta(projectID: string, pageMeta: PageMeta) {
+		const key = `pageMeta:${projectID}:${pageMeta.pageID}`
+		await this.KV.put(key, JSON.stringify(pageMeta))
 	}
 }
