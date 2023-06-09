@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "wrangler dev src/index.ts",
     "dev-remote": "wrangler dev src/index.ts --remote",
-    "deploy": "wrangler deploy --minify src/index.ts"
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "build": "wrangler deploy --dry-run --outdir ./build"
   },
   "dependencies": {
     "hono": "^3.2.2",

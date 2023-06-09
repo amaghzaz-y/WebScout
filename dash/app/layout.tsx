@@ -6,10 +6,6 @@ import Link from 'next/link'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: 'WS-ADMIN',
-  description: 'Admin Dashboard',
-}
 
 export default function RootLayout({
   children,
