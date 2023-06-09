@@ -7,16 +7,13 @@ const Parser = async (c: Context, projectID: string, url: string) => {
 	const spider = new Spider()
 	const kv = new KV(c.env.KV)
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER)
-	const crawledurl = await kv.getCrawledURL(projectID)
-	if (crawledurl.resources.has(url)) {
+	const parsedpage = await kv.getParsedPage(projectID)
+	if (parsedpage.resources.has(url)) {
 		return
 	}
-	const urls = await spider.Crawl(url)
-	urls.forEach(async (url) => {
-		await qm.SendToParser({ projectID: projectID, url: url })
-	})
-	crawledurl.resources.add(url)
-	await kv.setCrawledURL(projectID, crawledurl)
+	const page = await spider.Parse(url)
+	await kv.setPage(projectID, page)
+	await qm.SendToIndexer({ projectID: projectID, pageID: page.pageID })
 }
 
 export default Parser

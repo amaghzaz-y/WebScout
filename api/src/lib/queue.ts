@@ -1,7 +1,7 @@
 export default class QueueManager {
-	queue_parser: Queue<Body>
-	queue_indexer: Queue<Body>
-	queue_crawler: Queue<Body>
+	private queue_parser: Queue<Body>
+	private queue_indexer: Queue<Body>
+	private queue_crawler: Queue<Body>
 
 	constructor(QBINDING_PARSER: any, QBINDING_INDEXER: any, QBINDING_CRAWLER: any) {
 		this.queue_parser = QBINDING_PARSER
