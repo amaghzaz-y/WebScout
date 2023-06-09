@@ -1,7 +1,7 @@
 {
   "name": "ws-api",
   "scripts": {
-    "dev": "wrangler dev src/index.ts --port 3400",
+    "dev": "wrangler dev src/index.ts",
     "dev-remote": "wrangler dev src/index.ts --remote",
     "deploy": "wrangler deploy --minify src/index.ts"
   },
@@ -9,8 +9,10 @@
     "hono": "^3.2.2",
     "ofetch": "^1.0.1",
     "unstorage": "^1.6.1",
-    "webscout-core": "*",
-    "kv": "*"
+    "webscout": "*",
+    "cheerio": "^1.0.0-rc.12",
+    "parse-url": "^8.1.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230518.0",

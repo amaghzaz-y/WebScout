@@ -1,8 +1,8 @@
 import { Context, Hono } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { cors } from 'hono/cors'
-import { WebScoutEngine, InitEngine } from "webscout"
-import KV from "kv"
+import { WebScoutEngine, InitEngine } from "../../core/ts/webscout"
+import KV from "./kv"
 import { z } from "zod";
 
 // instantiate wasm
