@@ -14,7 +14,7 @@ const searchSchema = z.object(
 
 const searchHandler = async () => {
 	async (c: Context) => {
-		const kv = new KV(c.env.WSKV)
+		const kv = new KV(c.env.KV)
 		const body = await c.req.json();
 		let content: z.infer<typeof searchSchema>
 		try {

@@ -14,7 +14,7 @@ const indexSchema = z.object(
 )
 
 const indexHandler = async (c: Context) => {
-	const kv = new KV(c.env.WSKV)
+	const kv = new KV(c.env.KV)
 	const body = await c.req.json();
 	let content: z.infer<typeof indexSchema>
 	try {
