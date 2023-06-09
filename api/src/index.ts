@@ -1,8 +1,8 @@
 import { Context, Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { InitEngine } from "webscout"
-import searchHandler from './handlers/search'
-import indexHandler from './handlers'
+import searchHandler from './routes/search'
+import indexHandler from './routes'
 
 // instantiate wasm
 InitEngine()

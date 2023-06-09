@@ -2,7 +2,7 @@ import { WebScoutEngine } from "webscout"
 import { HTTPException } from 'hono/http-exception'
 import { Context } from 'hono'
 import { z } from "zod";
-import KV from "../kv"
+import KV from "../lib/kv"
 
 const indexSchema = z.object(
 	{

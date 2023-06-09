@@ -1,7 +1,7 @@
-import { WebScoutEngine } from "../../../core/ts/webscout"
+import { WebScoutEngine } from "webscout"
 import { Context } from 'hono'
 import { z } from "zod";
-import KV from "../kv"
+import KV from "../lib/kv"
 
 const searchSchema = z.object(
 	{

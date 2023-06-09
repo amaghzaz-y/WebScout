@@ -8,6 +8,7 @@ export interface PageMeta {
 export interface Page {
 	pageID: string
 	title: string
-	language: string
+	language?: string
 	content: string
 }
+
