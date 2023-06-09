@@ -29,16 +29,16 @@ export default class Spider {
 			content: text
 		}
 	}
-	async Crawl(EntryURL: string): Promise<string[]> {
+	async Crawl(EntryURL: string): Promise<Set<string>> {
 		const body = await this.Fetch(EntryURL) as string
 		const hostname = parseURL(EntryURL).resource
 		const regex = /(?:https?|ftp):\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:% _\+.~#?&//=]*)/g;
 		const matches = body.match(regex);
-		let urls: Array<string> = [EntryURL as string]
+		let urls = new Set<string>()
 		matches?.forEach((e) => {
 			let hn = parseURL(e).resource
 			if (hn == hostname) {
-				urls.push(e)
+				urls.add(e)
 			}
 		})
 		return urls

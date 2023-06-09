@@ -33,6 +33,7 @@ export default {
 		env: any,
 		ctx: ExecutionContext
 	): Promise<void> {
+		msg.messages
 		console.log(JSON.stringify(msg))
 	},
 }

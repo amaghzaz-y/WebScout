@@ -22,3 +22,8 @@ export interface MetaIndex {
 	pages: PageMeta[]
 }
 
+export interface CrawledURL {
+	projectID: string
+	resources: Set<string>
+}
+
