@@ -7,7 +7,7 @@ const searchSchema = z.object(
 	{
 		projectID: z.string(),
 		query: z.string(),
-		limit: z.number()
+		limit: z.string().optional()
 	}
 )
 
@@ -42,7 +42,6 @@ const searchHandler = async (c: Context) => {
 	// return Object
 	let results = ws.Search(content.query)
 	return c.json(results)
-
 }
 
 export default searchHandler

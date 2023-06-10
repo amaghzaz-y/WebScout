@@ -7,27 +7,40 @@ import { nanoid } from 'nanoid';
 export default class Spider {
 
 	async Fetch(url: string): Promise<string | null> {
-		return await ofetch(url, { retry: 3, parseResponse: txt => txt })
+		console.log(`url: ${url}`)
+		try {
+			console.log(`fetching: ${url}`)
+			const body = await ofetch(url, { retry: 3, parseResponse: txt => txt })
+			console.log('SPIDER: fetched...')
+			return body
+		}
+		catch (e) {
+			console.log(e)
+			return null
+		}
 	}
 
 	async Parse(url: string): Promise<Page> {
-		console.log('SPIDER: Parsing...')
-
-		let document = await this.Fetch(url) as string
-		let $ = cheerio.load(document)
-		let lang = $('html').attr('lang')
-		let title = $('title').text()
-		$('script').remove()
-		let content = $('body').text().split('\n')
-		let text: string = 'text'
-		content.forEach(e => {
-			text = text.concat(` ${e.trim()}`)
-		})
-		lang = (lang === undefined) ? 'en' : lang
-		return {
-			pageID: nanoid(),
-			title: title.trim(),
-			content: text
+		try {
+			console.log('SPIDER: Parsing...')
+			let document = await this.Fetch(url) as string
+			let $ = cheerio.load(document)
+			let title = $('title').text()
+			$('script').remove()
+			let content = $('body').text().split('\n')
+			let text: string = 'text'
+			content.forEach(e => {
+				text = text.concat(` ${e.trim()}`)
+			})
+			console.log('SPIDER: Parsed')
+			return {
+				pageID: nanoid(),
+				title: title.trim(),
+				content: text
+			}
+		} catch (e) {
+			console.log(e)
+			throw e
 		}
 	}
 

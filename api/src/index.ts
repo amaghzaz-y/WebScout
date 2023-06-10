@@ -40,17 +40,32 @@ export default {
 
 			case 'ws-crawl':
 				let crawlBatch = batch.messages.map((e) => e.body) as CrawlQM[]
-				await Crawler(env, crawlBatch)
+				try {
+					await Crawler(env, crawlBatch)
+				} catch (e) {
+					batch.retryAll()
+					throw e
+				}
 				break
 
 			case 'ws-parse':
 				let parseBatch = batch.messages.map((e) => e.body) as ParseQM[]
-				await Parser(env, parseBatch)
+				try {
+					await Parser(env, parseBatch)
+				} catch (e) {
+					batch.retryAll()
+					throw e
+				}
 				break
 
 			case 'ws-index':
 				let indexBatch = batch.messages.map((e) => e.body) as IndexQM[]
-				await Indexer(env, indexBatch)
+				try {
+					await Indexer(env, indexBatch)
+				} catch (e) {
+					batch.retryAll()
+					throw e
+				}
 				break
 
 			default:

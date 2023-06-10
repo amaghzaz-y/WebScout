@@ -1,4 +1,3 @@
-import { string } from "zod"
 
 export interface Profile {
 	name: string
@@ -31,17 +30,17 @@ export interface MetaIndex {
 
 export interface CrawledPages {
 	projectID: string
-	resources: Set<string>
+	resources: string[]
 }
 
 export interface ParsedPages {
 	projectID: string
-	resources: Set<string>
+	resources: string[]
 }
 
 export interface IndexedPages {
 	projectID: string
-	resources: Set<string>
+	resources: string[]
 }
 
 export interface CrawlQM {

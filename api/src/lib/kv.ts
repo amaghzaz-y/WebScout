@@ -37,15 +37,19 @@ export default class KV {
 
 	async setPage(projectID: string, page: Page) {
 		const key = `page:${projectID}:${page.pageID}`
+		console.log(key)
 		await this.KV.put(key, JSON.stringify(page))
+		console.log("SET PAGE IN KV")
 	}
 
-	async getPage(projectID: string, pageID: string): Promise<Page> {
+	async getPage(projectID: string, pageID: string): Promise<Page | null> {
 		const key = `page:${projectID}:${pageID}`
+		console.log(key)
 		const body = await this.KV.get(key)
-		if (body == null) {
-			throw new Error('ERROR:KV: Page Not Found')
+		if (body === null) {
+			return null
 		}
+		console.log("GOT PAGE IN KV")
 		return JSON.parse(body)
 	}
 
@@ -106,11 +110,11 @@ export default class KV {
 		const key = `parsedpage:${projectID}`
 		await this.KV.put(key, JSON.stringify(parsedPage))
 	}
-	async getParsedPages(projectID: string): Promise<ParsedPages> {
+	async getParsedPages(projectID: string): Promise<ParsedPages | null> {
 		const key = `parsedpage:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: ParsedPage Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}

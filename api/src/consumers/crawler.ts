@@ -12,13 +12,15 @@ const Crawler = async (env: any, batch: CrawlQM[]) => {
 	try {
 		crawledpages = await kv.getCrawledPages(batch[0].projectID)
 	} catch {
+		console.log('creting new list ')
+
 		crawledpages = {
 			projectID: batch[0].projectID,
-			resources: new Set<string>()
+			resources: []
 		}
 	}
 	batch.forEach(async (msg) => {
-		if (crawledpages.resources.has(msg.url)) {
+		if (crawledpages.resources.map((e) => { if (e == msg.url) return true; })) {
 			console.log('Resource EXISTS')
 			return
 		}
@@ -27,7 +29,7 @@ const Crawler = async (env: any, batch: CrawlQM[]) => {
 			await qm.SendToParser({ projectID: msg.projectID, url: url })
 			await qm.SendToCrawler({ projectID: msg.projectID, url: url })
 		})
-		crawledpages.resources.add(msg.url)
+		crawledpages.resources.push(msg.url)
 	})
 	await kv.setCrawledPages(batch[0].projectID, crawledpages)
 }

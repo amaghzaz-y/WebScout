@@ -13,7 +13,7 @@ const crawlSchema = z.object(
 const crawlHandler = async (c: Context) => {
 	const body = {
 		projectID: c.req.query('projectID'),
-		url: c.req.query('projectID'),
+		url: c.req.query('url'),
 	};
 	let content: z.infer<typeof crawlSchema>
 	try {
