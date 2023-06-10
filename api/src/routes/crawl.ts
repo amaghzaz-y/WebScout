@@ -27,7 +27,7 @@ const crawlHandler = async (c: Context) => {
 		})
 	}
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
-	await qm.SendToParser({
+	await qm.SendToCrawler({
 		projectID: content.projectID,
 		url: content.url
 	})

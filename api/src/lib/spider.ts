@@ -16,7 +16,7 @@ export default class Spider {
 		}
 	}
 
-	async Parse(url: string): Promise<Page> {
+	async Parse(url: string): Promise<Page | null> {
 		try {
 			let document = await this.Fetch(url) as string
 			let $ = cheerio.load(document)
@@ -33,7 +33,7 @@ export default class Spider {
 				content: text
 			}
 		} catch (e) {
-			throw e
+			return null
 		}
 	}
 
