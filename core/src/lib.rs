@@ -21,10 +21,10 @@ pub struct WebScout {
 #[wasm_bindgen]
 impl WebScout {
     #[wasm_bindgen(constructor)]
-    pub fn new(lang: String) -> WebScout {
+    pub fn new() -> WebScout {
         WebScout {
             index: Index::new(),
-            tokenizer: Tokenizer::new(&lang),
+            tokenizer: Tokenizer::new(),
             query: Query::default(),
         }
     }

@@ -27,7 +27,7 @@ impl Query {
     pub fn default() -> Query {
         Query {
             index: Index::new(),
-            tokenizer: Tokenizer::new("en"),
+            tokenizer: Tokenizer::new(),
         }
     }
 
