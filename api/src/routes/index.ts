@@ -1,8 +1,10 @@
-import { WebScoutEngine } from "webscout"
 import { HTTPException } from 'hono/http-exception'
 import { Context } from 'hono'
 import { z } from "zod";
 import KV from "../lib/kv"
+import QueueManager from "../lib/queue";
+import { nanoid } from "nanoid";
+import { Page } from "../lib/types";
 
 const indexSchema = z.object(
 	{
@@ -15,24 +17,27 @@ const indexSchema = z.object(
 
 const indexHandler = async (c: Context) => {
 	const kv = new KV(c.env.KV)
-	const body = await c.req.json();
-	let content: z.infer<typeof indexSchema>
+	const obj = await c.req.json();
+	let body: z.infer<typeof indexSchema>
 	try {
-		content = indexSchema.parse(body)
+		body = indexSchema.parse(obj)
 	} catch {
 		throw new HTTPException(400, { message: 'Malformed Request' })
 	}
-	const tokenizer = await kv.getTokenizer(content.language);
-	const index = await kv.getIndex(content.projectID, 0) as Uint8Array | null;
-	const ws = new WebScoutEngine(index, tokenizer, content.language)
-	ws.Index(content.title, content.body)
-	const idx = ws.ExportIndex()
-	if (idx !== null && idx !== undefined) {
-		await kv.setIndex(content.projectID, 0, idx)
-		return c.text('indexed successfully')
+	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
+	let page: Page = {
+		pageID: nanoid(),
+		title: body.title,
+		language: body.language,
+		content: body.body
 	}
-	c.status(502)
-	return c.text('error indexing file!')
+	await kv.setPage(body.projectID, page)
+	await qm.SendToIndexer({
+		projectID: body.projectID,
+		pageID: page.pageID,
+		language: page.language,
+	})
+	c.text("SUCCESS: Request queued for indexing.")
 }
 
 export default indexHandler

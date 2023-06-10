@@ -24,7 +24,7 @@ app.get('/q', async (c: Context) => {
 	return c.text("added to queue")
 })
 
-app.post('/search', searchHandler)
+app.get('/search', searchHandler)
 app.post('/index', indexHandler)
 
 
@@ -55,6 +55,7 @@ export default {
 				})
 				break
 
+			// that's very ugly, will refactor later
 			case 'ws-index':
 				const kv = new KV(env.KV)
 				let lang = ''

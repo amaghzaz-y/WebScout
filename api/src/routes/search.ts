@@ -15,7 +15,12 @@ const searchSchema = z.object(
 const searchHandler = async () => {
 	async (c: Context) => {
 		const kv = new KV(c.env.KV)
-		const body = await c.req.json();
+		const body = {
+			projectID: c.req.query('projectID'),
+			language: c.req.query('language'),
+			query: c.req.query('query'),
+			limit: c.req.query('limit')
+		};
 		let content: z.infer<typeof searchSchema>
 		try {
 			content = searchSchema.parse(body)
