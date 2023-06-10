@@ -21,6 +21,9 @@ const Crawler = async (env: any, batch: CrawlQM[]) => {
 			return
 		}
 		const urls = await spider.Crawl(msg.url)
+		if (urls == null) {
+			return
+		}
 		console.log(`CRAWLER::Found::${urls.size}`)
 		for (const url of urls) {
 			await qm.SendToParser({ projectID: msg.projectID, url: url })

@@ -32,6 +32,9 @@ const parseHandler = async (c: Context) => {
 	}
 	const spider = new Spider()
 	let page = await spider.Parse(content.url)
+	if (page == null) {
+		return c.text(`Error: ${content.url} cannot be parsed`)
+	}
 	await kv.setPage(content.projectID, page)
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
 	await qm.SendToIndexer({
