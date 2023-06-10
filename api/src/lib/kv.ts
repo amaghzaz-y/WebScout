@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch'
-import { CrawledURL, MetaIndex, Page, ParsedPage, Profile, Project } from './types'
+import { CrawledPages, IndexedPages, MetaIndex, Page, ParsedPages, Profile, Project } from './types'
 
 export default class KV {
 	private KV: KVNamespace
@@ -90,11 +90,11 @@ export default class KV {
 		const key = `profile`
 		await this.KV.put(key, JSON.stringify(profile))
 	}
-	async setCrawledURL(projectID: string, crawledurl: CrawledURL) {
+	async setCrawledPages(projectID: string, crawledurl: CrawledPages) {
 		const key = `crawledurl:${projectID}`
 		await this.KV.put(key, JSON.stringify(crawledurl))
 	}
-	async getCrawledURL(projectID: string): Promise<CrawledURL> {
+	async getCrawledPages(projectID: string): Promise<CrawledPages> {
 		const key = `crawledurl:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
@@ -102,12 +102,24 @@ export default class KV {
 		}
 		return JSON.parse(body)
 	}
-	async setParsedPage(projectID: string, parsedPage: ParsedPage) {
+	async setParsedPages(projectID: string, parsedPage: ParsedPages) {
 		const key = `parsedpage:${projectID}`
 		await this.KV.put(key, JSON.stringify(parsedPage))
 	}
-	async getParsedPage(projectID: string): Promise<ParsedPage> {
+	async getParsedPages(projectID: string): Promise<ParsedPages> {
 		const key = `parsedpage:${projectID}`
+		const body = await this.KV.get(key)
+		if (body == null) {
+			throw new Error('ERROR:KV: ParsedPage Not Found')
+		}
+		return JSON.parse(body)
+	}
+	async setIndexedPages(projectID: string, indexedPages: IndexedPages) {
+		const key = `indexedpage:${projectID}`
+		await this.KV.put(key, JSON.stringify(indexedPages))
+	}
+	async getIndexedPages(projectID: string): Promise<IndexedPages> {
+		const key = `indexedpage:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
 			throw new Error('ERROR:KV: ParsedPage Not Found')

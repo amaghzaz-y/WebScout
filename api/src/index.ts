@@ -39,26 +39,18 @@ export default {
 		switch (batch.queue) {
 
 			case 'ws-crawl':
-				batch.messages.forEach(async (msg) => {
-					let body = msg.body as CrawlQM
-					await Crawler(env, body.projectID, body.url)
-					msg.ack()
-				})
+				let crawlBatch = batch.messages.map((e) => e.body) as CrawlQM[]
+				await Crawler(env, crawlBatch)
 				break
 
 			case 'ws-parse':
-				batch.messages.forEach(async (msg) => {
-					let body = msg.body as ParseQM
-					await Parser(env, body.projectID, body.url)
-					msg.ack()
-				})
+				let parseBatch = batch.messages.map((e) => e.body) as ParseQM[]
+				await Parser(env, parseBatch)
 				break
 
-			// that's very ugly, will refactor later
 			case 'ws-index':
-				let msgBatch = batch.messages.map((e) => e.body) as IndexQM[]
-				console.log(JSON.stringify(msgBatch))
-				await Indexer(env, msgBatch)
+				let indexBatch = batch.messages.map((e) => e.body) as IndexQM[]
+				await Indexer(env, indexBatch)
 				break
 
 			default:

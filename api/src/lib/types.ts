@@ -1,3 +1,5 @@
+import { string } from "zod"
+
 export interface Profile {
 	name: string
 	projects: string[]
@@ -27,12 +29,17 @@ export interface MetaIndex {
 	pages: PageMeta[]
 }
 
-export interface CrawledURL {
+export interface CrawledPages {
 	projectID: string
 	resources: Set<string>
 }
 
-export interface ParsedPage {
+export interface ParsedPages {
+	projectID: string
+	resources: Set<string>
+}
+
+export interface IndexedPages {
 	projectID: string
 	resources: Set<string>
 }

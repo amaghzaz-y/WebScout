@@ -3,6 +3,7 @@ import { WebScoutEngine } from "webscout"
 import { IndexQM, Page } from "../lib/types"
 
 const Indexer = async (env: any, batch: IndexQM[]) => {
+	console.log('INDEXER: msg received')
 	const kv = new KV(env.KV)
 	const project = await kv.getProject(batch[0].projectID)
 	const tokenizer = await kv.getTokenizer(project.language)
@@ -14,7 +15,6 @@ const Indexer = async (env: any, batch: IndexQM[]) => {
 	})
 	const idx = WS.ExportIndex() as Uint8Array
 	await kv.setIndex(project.projectID, 0, idx);
-	console.log('indexed successfully')
 }
 
 export default Indexer

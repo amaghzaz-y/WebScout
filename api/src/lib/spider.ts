@@ -11,6 +11,8 @@ export default class Spider {
 	}
 
 	async Parse(url: string): Promise<Page> {
+		console.log('SPIDER: Parsing...')
+
 		let document = await this.Fetch(url) as string
 		let $ = cheerio.load(document)
 		let lang = $('html').attr('lang')
@@ -30,6 +32,7 @@ export default class Spider {
 	}
 
 	async Crawl(EntryURL: string): Promise<Set<string>> {
+		console.log('SPIDER: Crawling...')
 		const body = await this.Fetch(EntryURL) as string
 		const hostname = parseURL(EntryURL).resource
 		const regex = /(?:https?|ftp):\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:% _\+.~#?&//=]*)/g;

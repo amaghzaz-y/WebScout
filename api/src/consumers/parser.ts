@@ -1,17 +1,33 @@
 import KV from "../lib/kv"
 import Spider from "../lib/spider"
 import QueueManager from "../lib/queue"
-const Parser = async (env: any, projectID: string, url: string) => {
+import { ParseQM, ParsedPages } from "../lib/types"
+
+
+const Parser = async (env: any, batch: ParseQM[]) => {
+	console.log('PARSER: msg received')
 	const spider = new Spider()
 	const kv = new KV(env.KV)
 	const qm = new QueueManager(env.QUEUE_PARSER, env.QUEUE_INDEXER, env.QUEUE_CRAWLER)
-	const parsedpage = await kv.getParsedPage(projectID)
-	if (parsedpage.resources.has(url)) {
-		return
+	let parsedpages: ParsedPages
+	try {
+		parsedpages = await kv.getParsedPages(batch[0].projectID)
+	} catch {
+		parsedpages = {
+			projectID: batch[0].projectID,
+			resources: new Set<string>()
+		}
 	}
-	const page = await spider.Parse(url)
-	await kv.setPage(projectID, page)
-	await qm.SendToIndexer({ projectID: projectID, pageID: page.pageID })
+	batch.forEach(async (msg) => {
+		if (parsedpages.resources.has(msg.url)) {
+			console.log('Resource EXISTS')
+			return
+		}
+		const page = await spider.Parse(msg.url)
+		await kv.setPage(msg.projectID, page)
+		await qm.SendToIndexer({ projectID: msg.projectID, pageID: page.pageID })
+	})
+	await kv.setParsedPages(batch[0].projectID, parsedpages)
 }
 
 export default Parser
