@@ -5,6 +5,7 @@ export interface Profile {
 
 export interface Project {
 	projectID: string
+	name: string
 	language: string
 }
 

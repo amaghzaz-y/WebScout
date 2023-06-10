@@ -11,6 +11,7 @@ use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Tokenizer {
+    lang: String,
     tokens: PatriciaSet,
     #[serde(skip)]
     cache: HashMap<String, String>,
@@ -19,6 +20,7 @@ pub struct Tokenizer {
 impl Tokenizer {
     pub fn new() -> Tokenizer {
         Tokenizer {
+            lang: String::new(),
             tokens: PatriciaSet::new(),
             cache: HashMap::default(),
         }

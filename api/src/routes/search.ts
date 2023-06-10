@@ -38,7 +38,7 @@ const searchHandler = async (c: Context) => {
 		return c.text("error: index not found");
 	}
 
-	const ws = new WebScoutEngine(index, tokenizer, project.language)
+	const ws = new WebScoutEngine(index, tokenizer)
 	// return Object
 	let results = ws.Search(content.query)
 	return c.json(results)

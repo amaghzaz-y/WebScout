@@ -59,7 +59,7 @@ export default class KV {
 		const key = `project:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: Page Not Found')
+			throw new Error('ERROR:KV: Project Not Found')
 		}
 		return JSON.parse(body)
 	}

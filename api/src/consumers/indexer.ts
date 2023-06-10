@@ -1,16 +1,15 @@
-import { Context } from "hono"
 import KV from "../lib/kv"
 import { WebScoutEngine } from "webscout"
-import { Page } from "../lib/types"
+import { IndexQM, Page } from "../lib/types"
 
-const Indexer = async (c: Context, projectID: string, pageIDList: string[]) => {
-	const kv = new KV(c.env.KV)
-	const project = await kv.getProject(projectID)
+const Indexer = async (env: any, batch: IndexQM[]) => {
+	const kv = new KV(env.KV)
+	const project = await kv.getProject(batch[0].projectID)
 	const tokenizer = await kv.getTokenizer(project.language)
 	const index = await kv.getIndex(project.projectID, 0)
-	let WS = new WebScoutEngine(index, tokenizer, project.language)
-	pageIDList.forEach(async (pageID) => {
-		const page = await kv.getPage(projectID, pageID) as Page
+	let WS = new WebScoutEngine(index, tokenizer)
+	batch.forEach(async (msg) => {
+		const page = await kv.getPage(msg.projectID, msg.pageID) as Page
 		WS.Index(page.title as string, page.content)
 	})
 	const idx = WS.ExportIndex() as Uint8Array

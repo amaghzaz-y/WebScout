@@ -7,8 +7,8 @@ export const InitEngine = () => {
 
 export class WebScoutEngine {
 	webscout?: WebScout;
-	constructor(index: Uint8Array | null, tokenizer: Uint8Array, language: string) {
-		this.webscout = new WebScout(language);
+	constructor(index: Uint8Array | null, tokenizer: Uint8Array) {
+		this.webscout = new WebScout();
 		if (index !== null) { this.webscout.deserialize_index(index); }
 		this.webscout.deserialize_tokenizer(tokenizer);
 		// sets up the query engine, optimizes memory

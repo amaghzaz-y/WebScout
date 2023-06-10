@@ -1,4 +1,3 @@
-import { Context } from "hono"
 import KV from "../lib/kv"
 import Spider from "../lib/spider"
 import QueueManager from "../lib/queue"

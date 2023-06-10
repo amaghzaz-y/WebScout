@@ -10,6 +10,7 @@ import Indexer from './consumers/indexer'
 import KV from './lib/kv'
 import crawlHandler from './routes/crawl'
 import parseHandler from './routes/parse'
+import projectHandler from './routes/project'
 // instantiate wasm
 InitEngine()
 
@@ -22,7 +23,7 @@ app.get('/', async (c) => { return c.text("ws-api says hello 👋!") })
 app.get('/search', searchHandler)
 app.get('/crawl', crawlHandler)
 app.get('/parse', parseHandler)
-app.get('/new/project');
+app.get('/project', projectHandler);
 app.post('/index', indexHandler)
 
 
@@ -55,7 +56,9 @@ export default {
 
 			// that's very ugly, will refactor later
 			case 'ws-index':
-
+				let msgBatch = batch.messages.map((e) => e.body) as IndexQM[]
+				console.log(JSON.stringify(msgBatch))
+				await Indexer(env, msgBatch)
 				break
 
 			default:
