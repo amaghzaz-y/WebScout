@@ -44,7 +44,8 @@ impl WebScout {
     pub fn search_all(&mut self, search: String) -> JsValue {
         let mut query = Query::new(&self.index, &self.tokenizer);
         let res = query.search(&search);
-        let res = query.all(res.0);
+        let mut res = query.all(res.0);
+        res.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
         let json = serde_json::to_string(&res).unwrap();
         JsValue::from_str(&json)
     }
@@ -53,7 +54,9 @@ impl WebScout {
     pub fn search_above_average(&mut self, search: String) -> JsValue {
         let mut query = Query::new(&self.index, &self.tokenizer);
         let res = query.search(&search);
-        let res = query.above_average(res.0, res.1);
+        let mut res = query.above_average(res.0, res.1);
+        // .sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+        res.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap());
         let json = serde_json::to_string(&res).unwrap();
         JsValue::from_str(&json)
     }

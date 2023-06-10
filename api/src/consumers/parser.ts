@@ -5,30 +5,32 @@ import { ParseQM } from "../lib/types"
 
 
 const Parser = async (env: any, batch: ParseQM[]) => {
-	console.log('PARSER: msg received')
+	console.log('PARSER::Consumer')
 	const spider = new Spider()
 	const kv = new KV(env.KV)
 	const qm = new QueueManager(env.QUEUE_PARSER, env.QUEUE_INDEXER, env.QUEUE_CRAWLER)
 	let parsedpages = await kv.getParsedPages(batch[0].projectID)
-	if (parsedpages === null) {
+	if (parsedpages == null) {
 		parsedpages = {
 			projectID: batch[0].projectID,
 			resources: []
 		}
 	}
-
-	batch.forEach(async (msg) => {
-		console.log(JSON.stringify(parsedpages))
-		if (parsedpages?.resources.includes(msg.url)) {
-			console.log('Resource EXISTS')
+	for (const msg of batch) {
+		if (parsedpages.resources.includes(msg.url)) {
+			console.log('PARSER::Resource::Exists')
 			return
 		}
-		console.log(JSON.stringify(msg))
 		const page = await spider.Parse(msg.url)
-		console.log('sending')
+		if (page == null) {
+			console.log(`PARSER::Error::Parsing::${msg.url}`)
+			return
+		}
 		await kv.setPage(msg.projectID, page)
+		parsedpages.resources.push(msg.url);
 		await qm.SendToIndexer({ projectID: msg.projectID, pageID: page.pageID })
-	})
+	}
 	await kv.setParsedPages(batch[0].projectID, parsedpages)
+	console.log("PARSER::Saved::ParsedPages")
 }
 export default Parser
