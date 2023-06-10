@@ -16,8 +16,7 @@ const Parser = async (env: any, batch: ParseQM[]) => {
 			resources: []
 		}
 	}
-
-	batch.forEach(async (msg) => {
+	for (const msg of batch) {
 		console.log(JSON.stringify(parsedpages))
 		if (parsedpages?.resources.includes(msg.url)) {
 			console.log('Resource EXISTS')
@@ -28,7 +27,7 @@ const Parser = async (env: any, batch: ParseQM[]) => {
 		console.log('sending')
 		await kv.setPage(msg.projectID, page)
 		await qm.SendToIndexer({ projectID: msg.projectID, pageID: page.pageID })
-	})
+	}
 	await kv.setParsedPages(batch[0].projectID, parsedpages)
 }
 export default Parser
