@@ -25,6 +25,7 @@ const Crawler = async (env: any, batch: CrawlQM[]) => {
 		}
 		const urls = await spider.Crawl(msg.url)
 		if (urls == null) {
+			console.log("CRAWLER::DRY")
 			return
 		}
 		console.log(`CRAWLER::Found::${urls.size}`)
