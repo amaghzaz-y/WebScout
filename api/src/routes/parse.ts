@@ -14,7 +14,6 @@ const parseSchema = z.object(
 
 const parseHandler = async (c: Context) => {
 	const kv = new KV(c.env.KV)
-
 	const body = {
 		projectID: c.req.query('projectID'),
 		url: c.req.query('url'),

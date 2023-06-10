@@ -17,7 +17,7 @@ const Indexer = async (env: any, batch: IndexQM[]) => {
 		if (page == null) {
 			throw new Error("INDEXER::Error::PageNotFound")
 		}
-		WS.Index(page.title as string, page.content)
+		WS.Index(page.title, page.content)
 	}
 	const idx = WS.ExportIndex() as Uint8Array
 	await kv.setIndex(project.projectID, 0, idx);
