@@ -8,6 +8,7 @@ import { CrawlQM, IndexQM, ParseQM } from './lib/types'
 import Parser from './consumers/parser'
 import Indexer from './consumers/indexer'
 import KV from './lib/kv'
+import crawlHandler from './routes/crawl'
 // instantiate wasm
 InitEngine()
 
@@ -17,14 +18,10 @@ app.use("/*", cors())
 
 app.get('/', async (c) => { return c.text("ws-api says hello !") })
 
-app.get('/q', async (c: Context) => {
-	await c.env.QUEUE.send({
-		msg: 'hello from queue'
-	}) as any
-	return c.text("added to queue")
-})
-
 app.get('/search', searchHandler)
+app.get('/crawl', crawlHandler)
+app.get('/crawl', crawlHandler)
+
 app.post('/index', indexHandler)
 
 
