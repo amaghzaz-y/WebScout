@@ -21,6 +21,7 @@ export default class Spider {
 		content.forEach(e => {
 			text = text.concat(` ${e.trim()}`)
 		})
+		lang = (lang === undefined) ? 'en' : lang
 		return {
 			pageID: nanoid(),
 			title: title.trim(),

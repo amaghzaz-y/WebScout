@@ -3,10 +3,10 @@ import KV from "../lib/kv"
 import Spider from "../lib/spider"
 import QueueManager from "../lib/queue"
 
-const Crawler = async (c: Context, projectID: string, url: string) => {
+const Crawler = async (env: any, projectID: string, url: string) => {
 	const spider = new Spider()
-	const kv = new KV(c.env.KV)
-	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER)
+	const kv = new KV(env.KV)
+	const qm = new QueueManager(env.QUEUE_PARSER, env.QUEUE_INDEXER, env.QUEUE_CRAWLER)
 	const crawledurl = await kv.getCrawledURL(projectID)
 	if (crawledurl.resources.has(url)) {
 		return

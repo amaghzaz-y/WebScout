@@ -43,7 +43,10 @@ export default class KV {
 	async getPage(projectID: string, pageID: string): Promise<Page | null> {
 		const key = `page:${projectID}:${pageID}`
 		const body = await this.KV.get(key)
-		return JSON.parse(body as string)
+		if (body == null) {
+			throw new Error('ERROR:KV: Page Not Found')
+		}
+		return JSON.parse(body)
 	}
 
 	async setMetaIndex(mindex: MetaIndex) {
@@ -54,11 +57,18 @@ export default class KV {
 	async getMetaIndex(projectID: string): Promise<MetaIndex | null> {
 		const key = `metaindex:${projectID}`
 		const body = await this.KV.get(key)
-		return JSON.parse(body as string)
+		if (body == null) {
+			throw new Error('ERROR:KV: MetaIndex Not Found')
+		}
+		return JSON.parse(body)
 	}
-	async getProfile() {
+	async getProfile(): Promise<Profile> {
 		const key = `profile`
-		await this.KV.get(key)
+		const body = await this.KV.get(key)
+		if (body == null) {
+			throw new Error('ERROR:KV: Profile Not Found')
+		}
+		return JSON.parse(body)
 	}
 	async setProfile(profile: Profile) {
 		const key = `profile`
@@ -71,7 +81,10 @@ export default class KV {
 	async getCrawledURL(projectID: string): Promise<CrawledURL> {
 		const key = `crawledurl:${projectID}`
 		const body = await this.KV.get(key)
-		return JSON.parse(body as string)
+		if (body == null) {
+			throw new Error('ERROR:KV: CrawledURL Not Found')
+		}
+		return JSON.parse(body)
 	}
 	async setParsedPage(projectID: string, parsedPage: ParsedPage) {
 		const key = `parsedpage:${projectID}`
@@ -80,6 +93,9 @@ export default class KV {
 	async getParsedPage(projectID: string): Promise<ParsedPage> {
 		const key = `parsedpage:${projectID}`
 		const body = await this.KV.get(key)
-		return JSON.parse(body as string)
+		if (body == null) {
+			throw new Error('ERROR:KV: ParsedPage Not Found')
+		}
+		return JSON.parse(body)
 	}
 }

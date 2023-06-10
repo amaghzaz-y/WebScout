@@ -13,7 +13,7 @@ export interface PageMeta {
 export interface Page {
 	pageID: string
 	title: string
-	language?: string
+	language: string
 	content: string
 }
 
@@ -32,3 +32,18 @@ export interface ParsedPage {
 	resources: Set<string>
 }
 
+export interface CrawlQM {
+	projectID: string
+	url: string
+}
+
+export interface ParseQM {
+	projectID: string
+	url: string
+}
+
+export interface IndexQM {
+	projectID: string
+	pageID: string
+	language: string
+}
