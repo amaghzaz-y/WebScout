@@ -20,9 +20,11 @@ const Indexer = async (env: any, batch: IndexQM[]) => {
 			return
 		}
 		WS.Index(page.title, page.content)
+		console.log(`INDEXER::SUCCESS`)
 	}
 	const idx = WS.ExportIndex() as Uint8Array
 	await kv.setIndex(project.projectID, 0, idx);
+	console.log(`INDEXER::INDEX::SAVED`)
 }
 
 export default Indexer
