@@ -23,7 +23,8 @@ const Parser = async (env: any, batch: ParseQM[]) => {
 		}
 		const page = await spider.Parse(msg.url)
 		if (page == null) {
-			throw new Error("PARSER::Error::Parsing")
+			console.log(`PARSER::Error::Parsing::${msg.url}`)
+			return
 		}
 		await kv.setPage(msg.projectID, page)
 		parsedpages.resources.push(msg.url);

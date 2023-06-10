@@ -29,6 +29,12 @@ const parseHandler = async (c: Context) => {
 			},
 		})
 	}
+	
+	let project = await kv.getProject(content.projectID)
+	if (project == null) {
+		return c.text("Project Not Found", 404)
+	}
+	
 	const spider = new Spider()
 	let page = await spider.Parse(content.url)
 	if (page == null) {

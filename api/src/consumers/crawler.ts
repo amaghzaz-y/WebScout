@@ -5,6 +5,9 @@ import { CrawlQM } from "../lib/types"
 
 const Crawler = async (env: any, batch: CrawlQM[]) => {
 	console.log("CRAWLER::Consumer")
+	if (batch.length == 0) {
+		return
+	}
 	const spider = new Spider()
 	const kv = new KV(env.KV)
 	const qm = new QueueManager(env.QUEUE_PARSER, env.QUEUE_INDEXER, env.QUEUE_CRAWLER)

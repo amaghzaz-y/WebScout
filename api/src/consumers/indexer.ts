@@ -7,7 +7,8 @@ const Indexer = async (env: any, batch: IndexQM[]) => {
 	const kv = new KV(env.KV)
 	const project = await kv.getProject(batch[0].projectID)
 	if (project == null) {
-		throw new Error("INDEXER : Project Not Found")
+		console.log(`"INDEXER : ${batch[0].projectID} Not Found"`)
+		return
 	}
 	const tokenizer = await kv.getTokenizer(project.language)
 	const index = await kv.getIndex(project.projectID, 0)
@@ -15,7 +16,8 @@ const Indexer = async (env: any, batch: IndexQM[]) => {
 	for (const msg of batch) {
 		const page = await kv.getPage(msg.projectID, msg.pageID)
 		if (page == null) {
-			throw new Error("INDEXER::Error::PageNotFound")
+			console.log(`INDEXER::Error::PageNotFound::${msg.pageID}`)
+			return
 		}
 		WS.Index(page.title, page.content)
 	}

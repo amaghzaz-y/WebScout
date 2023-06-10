@@ -12,7 +12,6 @@ export default class Spider {
 			let type = body.headers.get('Content-Type')
 			if (type !== null) {
 				let mime = type.split('/')
-				console.log(mime)
 				if (mime[0].trim() == 'text') {
 					return await body.text()
 				}

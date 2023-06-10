@@ -1,6 +1,7 @@
 import { Context } from 'hono'
 import { z } from "zod";
 import QueueManager from "../lib/queue";
+import KV from '../lib/kv';
 
 
 const crawlSchema = z.object(
@@ -11,6 +12,7 @@ const crawlSchema = z.object(
 )
 
 const crawlHandler = async (c: Context) => {
+	const kv = new KV(c.env.KV)
 	const body = {
 		projectID: c.req.query('projectID'),
 		url: c.req.query('url'),
@@ -26,6 +28,12 @@ const crawlHandler = async (c: Context) => {
 			},
 		})
 	}
+	
+	let project = await kv.getProject(content.projectID)
+	if (project == null) {
+		return c.text("Project Not Found", 404)
+	}
+	
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
 	await qm.SendToCrawler({
 		projectID: content.projectID,

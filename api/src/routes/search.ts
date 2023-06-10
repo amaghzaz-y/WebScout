@@ -29,10 +29,12 @@ const searchHandler = async (c: Context) => {
 			},
 		})
 	}
+
 	const project = await kv.getProject(content.projectID)
 	if (project == null) {
 		return c.text("project not found", 404)
 	}
+
 	const tokenizer = await kv.getTokenizer(project.language);
 	const index = await kv.getIndex(content.projectID, 0);
 

@@ -29,13 +29,14 @@ const projectHandler = async (c: Context) => {
 			},
 		})
 	}
-	try {
-		let project = await kv.getProject(content.projectID)
-		return c.json(project)
-	} catch {
+	
+	let project = await kv.getProject(content.projectID)
+	if (project == null) {
 		await kv.setProject(content.projectID, content)
 		return c.text("SUCCESS: New Project Created")
 	}
+	
+	return c.json(project)
 }
 
 export default projectHandler
