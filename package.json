@@ -14,11 +14,8 @@
   },
   "packageManager": "npm@9.6.4",
   "workspaces": [
-    "workers/*",
-    "packages/*",
-    "apps/*"
-  ],
-  "dependencies": {
-    "zod": "^3.21.4"
-  }
+    "dash",
+    "api",
+    "core"
+  ]
 }
