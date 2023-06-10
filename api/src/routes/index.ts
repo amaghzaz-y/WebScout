@@ -8,8 +8,7 @@ import { Page } from "../lib/types";
 
 const indexSchema = z.object(
 	{
-		projectID: z.string(),
-		language: z.string().max(2),
+		projectID: z.string().min(4),
 		title: z.string(),
 		body: z.string(),
 	}
@@ -28,16 +27,14 @@ const indexHandler = async (c: Context) => {
 	let page: Page = {
 		pageID: nanoid(),
 		title: body.title,
-		language: body.language,
 		content: body.body
 	}
 	await kv.setPage(body.projectID, page)
 	await qm.SendToIndexer({
 		projectID: body.projectID,
 		pageID: page.pageID,
-		language: page.language,
 	})
-	c.text("SUCCESS: Request queued for indexing.")
+	return c.text("SUCCESS: Request queued for indexing.")
 }
 
 export default indexHandler

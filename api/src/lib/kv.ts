@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch'
-import { CrawledURL, MetaIndex, Page, ParsedPage, Profile } from './types'
+import { CrawledURL, MetaIndex, Page, ParsedPage, Profile, Project } from './types'
 
 export default class KV {
 	private KV: KVNamespace
@@ -40,7 +40,7 @@ export default class KV {
 		await this.KV.put(key, JSON.stringify(page))
 	}
 
-	async getPage(projectID: string, pageID: string): Promise<Page | null> {
+	async getPage(projectID: string, pageID: string): Promise<Page> {
 		const key = `page:${projectID}:${pageID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
@@ -49,12 +49,28 @@ export default class KV {
 		return JSON.parse(body)
 	}
 
+
+	async setProject(projectID: string, project: Project) {
+		const key = `project:${projectID}`
+		await this.KV.put(key, JSON.stringify(project))
+	}
+
+	async getProject(projectID: string): Promise<Project> {
+		const key = `project:${projectID}`
+		const body = await this.KV.get(key)
+		if (body == null) {
+			throw new Error('ERROR:KV: Page Not Found')
+		}
+		return JSON.parse(body)
+	}
+
+
 	async setMetaIndex(mindex: MetaIndex) {
 		const key = `metaindex:${mindex.projectID}`
 		await this.KV.put(key, JSON.stringify(mindex))
 	}
 
-	async getMetaIndex(projectID: string): Promise<MetaIndex | null> {
+	async getMetaIndex(projectID: string): Promise<MetaIndex> {
 		const key = `metaindex:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {

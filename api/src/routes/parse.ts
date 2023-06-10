@@ -31,7 +31,7 @@ const parseHandler = async (c: Context) => {
 		projectID: content.projectID,
 		url: content.url
 	})
-	c.text("SUCCESS: URL queued for parsing.")
+	return c.text("SUCCESS: URL queued for parsing.")
 }
 
 export default parseHandler

@@ -31,7 +31,7 @@ const crawlHandler = async (c: Context) => {
 		projectID: content.projectID,
 		url: content.url
 	})
-	c.text("SUCCESS: URL queued for crawling.")
+	return c.text("SUCCESS: URL queued for crawling.")
 }
 
 export default crawlHandler

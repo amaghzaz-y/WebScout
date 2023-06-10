@@ -1,7 +1,7 @@
 {
   "name": "ws-api",
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
+    "dev": "wrangler dev src/index.ts --port 6969",
     "dev-remote": "wrangler dev src/index.ts --remote",
     "deploy": "wrangler deploy --minify src/index.ts",
     "build": "wrangler deploy --dry-run --outdir ./build"

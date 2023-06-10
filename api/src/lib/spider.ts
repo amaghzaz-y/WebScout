@@ -25,7 +25,6 @@ export default class Spider {
 		return {
 			pageID: nanoid(),
 			title: title.trim(),
-			language: lang,
 			content: text
 		}
 	}

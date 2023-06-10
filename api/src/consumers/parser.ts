@@ -1,4 +1,3 @@
-import { Context } from "hono"
 import KV from "../lib/kv"
 import Spider from "../lib/spider"
 import QueueManager from "../lib/queue"
@@ -12,7 +11,7 @@ const Parser = async (env: any, projectID: string, url: string) => {
 	}
 	const page = await spider.Parse(url)
 	await kv.setPage(projectID, page)
-	await qm.SendToIndexer({ projectID: projectID, pageID: page.pageID, language: page.language })
+	await qm.SendToIndexer({ projectID: projectID, pageID: page.pageID })
 }
 
 export default Parser

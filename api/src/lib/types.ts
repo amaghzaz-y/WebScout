@@ -3,6 +3,11 @@ export interface Profile {
 	projects: string[]
 }
 
+export interface Project {
+	projectID: string
+	language: string
+}
+
 export interface PageMeta {
 	pageID: string
 	url: string
@@ -13,7 +18,6 @@ export interface PageMeta {
 export interface Page {
 	pageID: string
 	title: string
-	language: string
 	content: string
 }
 
@@ -45,5 +49,4 @@ export interface ParseQM {
 export interface IndexQM {
 	projectID: string
 	pageID: string
-	language: string
 }
