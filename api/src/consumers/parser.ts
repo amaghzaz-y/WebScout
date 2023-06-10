@@ -17,8 +17,7 @@ const Parser = async (env: any, batch: ParseQM[]) => {
 		}
 	}
 	for (const msg of batch) {
-		console.log(JSON.stringify(parsedpages))
-		if (parsedpages?.resources.includes(msg.url)) {
+		if (parsedpages.resources.includes(msg.url)) {
 			console.log('PARSER::Resource::Exists')
 			return
 		}

@@ -8,8 +8,16 @@ export default class Spider {
 
 	async Fetch(url: string): Promise<string | null> {
 		try {
-			const body = await ofetch(url, { retry: 3, parseResponse: txt => txt })
-			return body
+			const body = await fetch(url)
+			let type = body.headers.get('Content-Type')
+			if (type !== null) {
+				let mime = type.split('/')
+				console.log(mime)
+				if (mime[0].trim() == 'text') {
+					return await body.text()
+				}
+			}
+			return null
 		}
 		catch {
 			return null
