@@ -1,12 +1,10 @@
-"use client"
+'use client'
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 
 export default function SearchPage() {
 	const [state, setState] = useState({
-		userID: "",
 		projectID: "",
-		language: "",
 		query: "",
 		limit: "",
 		result: ""
@@ -22,9 +20,7 @@ export default function SearchPage() {
 
 	const handleSearch = async () => {
 		const body = {
-			userID: state.userID,
 			projectID: state.projectID,
-			language: state.language,
 			query: state.query,
 			limit: parseInt(state.limit)
 		};
@@ -67,26 +63,10 @@ export default function SearchPage() {
 		<div className="w-full flex flex-col gap-2 p-3">
 			<div>Search page</div>
 			<TextField
-				label="User ID"
-				variant="outlined"
-				name="userID"
-				value={state.userID}
-				onChange={handleChange}
-
-			/>
-			<TextField
 				label="Project ID"
 				variant="outlined"
 				name="projectID"
 				value={state.projectID}
-				onChange={handleChange}
-
-			/>
-			<TextField
-				label="Language"
-				variant="outlined"
-				name="language"
-				value={state.language}
 				onChange={handleChange}
 
 			/>
