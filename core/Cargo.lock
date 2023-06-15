@@ -1436,6 +1436,7 @@ dependencies = [
  "criterion",
  "getrandom",
  "hashbrown 0.13.2",
+ "lazy_static",
  "patricia_tree",
  "regex",
  "reqwest",
