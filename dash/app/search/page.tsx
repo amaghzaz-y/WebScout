@@ -1,6 +1,8 @@
 'use client'
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
+import NavBar from "../components/NavBar";
+import SearchResult from "../components/SearchResult";
 
 export default function SearchPage() {
 	const [state, setState] = useState({
@@ -22,20 +24,15 @@ export default function SearchPage() {
 		const body = {
 			projectID: state.projectID,
 			query: state.query,
-			limit: parseInt(state.limit)
+			limit: state.limit
 		};
 
 		try {
-			const response = await fetch("https://api.webscout.cc/search", {
-				method: "POST",
+			const response = await fetch(`https://api.webscout.cc/search?projectID=${body.projectID}&query=${body.query}`, {
+				method: "GET",
 				mode: "cors",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(body)
 			});
 			const result = await response.text();
-
 			if (result.length > 0) {
 				setState((prevState) => ({
 					...prevState,
@@ -61,14 +58,15 @@ export default function SearchPage() {
 
 	return (
 		<div className="w-full flex flex-col gap-2 p-3">
-			<div>Search page</div>
+			<NavBar />
+			<div className="p-3">Search page</div>
 			<TextField
 				label="Project ID"
 				variant="outlined"
 				name="projectID"
 				value={state.projectID}
 				onChange={handleChange}
-
+				autoComplete="false"
 			/>
 			<TextField
 				label="Query"
@@ -90,13 +88,14 @@ export default function SearchPage() {
 			<Button className="my-1" variant="outlined" onClick={handleSearch}>
 				Search
 			</Button>
-			<TextField
+			{/* <TextField
 				label="Results"
 				value={state.result}
 				rows={4}
 				multiline
 				disabled
-			/>
+			/> */}
+			<SearchResult />
 		</div>
 	);
 }

@@ -54,7 +54,6 @@ export default function IndexerPage() {
 	return (
 		<div className="w-full flex flex-col gap-2 p-3">
 			<div>Indexer page</div>
-
 			<TextField
 				label="Project ID"
 				variant="outlined"
