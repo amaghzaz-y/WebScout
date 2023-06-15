@@ -5,7 +5,7 @@ pub mod document;
 pub mod jaro;
 pub mod parser;
 // pub mod query;
-pub mod tokenizer;
+pub mod Stemmer;
 pub mod utils;
 // use alloc::{string::String, vec::Vec};
 // use index::Index;

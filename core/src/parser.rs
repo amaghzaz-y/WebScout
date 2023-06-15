@@ -1,31 +1,24 @@
-use alloc::{
-    string::String,
-    vec::{self, Vec},
-};
+use alloc::{string::String, vec::Vec};
 
-use crate::tokenizer::{self, Tokenizer};
+use crate::Stemmer::Stemmer;
 
-struct Token {
-    token: String,
-    position: usize,
+pub struct Token {
+    pub token: String,
+    pub position: usize,
 }
-pub struct Parser {
-    tokens: Vec<Token>,
-}
+pub struct Parser {}
 impl Parser {
-    pub fn new() -> Parser {
-        Parser { tokens: Vec::new() }
-    }
-    pub fn parse_text(&mut self, text: String) {
-        //"[\w--[[:punct:]]]+"g
-        let mut tokenizer = Tokenizer::new();
-        tokenizer.detect_lang(&text);
+    pub fn parse_text(&self, text: String) -> Vec<Token> {
+        let mut tokens: Vec<Token> = Vec::new();
+        let mut stemmer = Stemmer::new();
+        stemmer.detect_lang(&text);
         let re = regex::Regex::new(r"[\w--[[:punct:]]]+").unwrap();
         for (pos, mat) in re.find_iter(&text).enumerate() {
-            self.tokens.push(Token {
-                token: tokenizer.tokenize(mat.as_str()),
+            tokens.push(Token {
+                token: stemmer.stem(mat.as_str()),
                 position: pos,
             })
         }
+        tokens
     }
 }
