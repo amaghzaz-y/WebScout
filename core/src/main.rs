@@ -2,6 +2,6 @@
 extern crate rust_stemmers;
 use webscout::parser::Parser;
 fn main() {
-    let parser = Parser::new();
-    // parser.parse_text("34dsd".to_string());
+    let tokens = Parser::parse_text("hello from most worlds");
+    println!("{:?}", tokens)
 }
