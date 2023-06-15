@@ -14,7 +14,6 @@ const parseSchema = z.object(
 
 const parseHandler = async (c: Context) => {
 	const kv = new KV(c.env.KV)
-
 	const body = {
 		projectID: c.req.query('projectID'),
 		url: c.req.query('url'),
@@ -30,8 +29,17 @@ const parseHandler = async (c: Context) => {
 			},
 		})
 	}
+	
+	let project = await kv.getProject(content.projectID)
+	if (project == null) {
+		return c.text("Project Not Found", 404)
+	}
+	
 	const spider = new Spider()
 	let page = await spider.Parse(content.url)
+	if (page == null) {
+		return c.text(`Error: ${content.url} cannot be parsed`)
+	}
 	await kv.setPage(content.projectID, page)
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
 	await qm.SendToIndexer({

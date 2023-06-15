@@ -32,9 +32,7 @@ impl Index {
         for (token, positions) in &document.index() {
             let doc_name = document.id();
             let stats: Weight = positions.to_owned();
-
             let map = HashMap::from([(doc_name, stats)]);
-
             self.map
                 .entry(token.to_owned())
                 .or_insert(map)

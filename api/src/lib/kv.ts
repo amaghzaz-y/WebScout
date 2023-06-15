@@ -37,19 +37,15 @@ export default class KV {
 
 	async setPage(projectID: string, page: Page) {
 		const key = `page:${projectID}:${page.pageID}`
-		console.log(key)
 		await this.KV.put(key, JSON.stringify(page))
-		console.log("SET PAGE IN KV")
 	}
 
 	async getPage(projectID: string, pageID: string): Promise<Page | null> {
 		const key = `page:${projectID}:${pageID}`
-		console.log(key)
 		const body = await this.KV.get(key)
 		if (body === null) {
 			return null
 		}
-		console.log("GOT PAGE IN KV")
 		return JSON.parse(body)
 	}
 
@@ -59,11 +55,11 @@ export default class KV {
 		await this.KV.put(key, JSON.stringify(project))
 	}
 
-	async getProject(projectID: string): Promise<Project> {
+	async getProject(projectID: string): Promise<Project | null> {
 		const key = `project:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: Project Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}
@@ -74,19 +70,19 @@ export default class KV {
 		await this.KV.put(key, JSON.stringify(mindex))
 	}
 
-	async getMetaIndex(projectID: string): Promise<MetaIndex> {
+	async getMetaIndex(projectID: string): Promise<MetaIndex | null> {
 		const key = `metaindex:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: MetaIndex Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}
-	async getProfile(): Promise<Profile> {
+	async getProfile(): Promise<Profile | null> {
 		const key = `profile`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: Profile Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}
@@ -98,11 +94,11 @@ export default class KV {
 		const key = `crawledurl:${projectID}`
 		await this.KV.put(key, JSON.stringify(crawledurl))
 	}
-	async getCrawledPages(projectID: string): Promise<CrawledPages> {
+	async getCrawledPages(projectID: string): Promise<CrawledPages | null> {
 		const key = `crawledurl:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: CrawledURL Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}
@@ -122,11 +118,11 @@ export default class KV {
 		const key = `indexedpage:${projectID}`
 		await this.KV.put(key, JSON.stringify(indexedPages))
 	}
-	async getIndexedPages(projectID: string): Promise<IndexedPages> {
+	async getIndexedPages(projectID: string): Promise<IndexedPages | null> {
 		const key = `indexedpage:${projectID}`
 		const body = await this.KV.get(key)
 		if (body == null) {
-			throw new Error('ERROR:KV: ParsedPage Not Found')
+			return null
 		}
 		return JSON.parse(body)
 	}

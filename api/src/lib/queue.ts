@@ -11,12 +11,12 @@ export default class QueueManager {
 		this.queue_crawler = QBINDING_CRAWLER
 	}
 	async SendToParser(msg: ParseQM) {
-		this.queue_parser.send(msg as any)
+		await this.queue_parser.send(msg as any)
 	}
 	async SendToIndexer(msg: IndexQM) {
-		this.queue_indexer.send(msg as any)
+		await this.queue_indexer.send(msg as any)
 	}
 	async SendToCrawler(msg: CrawlQM) {
-		this.queue_crawler.send(msg as any)
+		await this.queue_crawler.send(msg as any)
 	}
 }

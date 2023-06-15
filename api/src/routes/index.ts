@@ -23,6 +23,12 @@ const indexHandler = async (c: Context) => {
 	} catch {
 		throw new HTTPException(400, { message: 'Malformed Request' })
 	}
+	
+	let project = await kv.getProject(body.projectID)
+	if (project == null) {
+		return c.text("Project Not Found", 404)
+	}
+	
 	const qm = new QueueManager(c.env.QUEUE_PARSER, c.env.QUEUE_INDEXER, c.env.QUEUE_CRAWLER);
 	let page: Page = {
 		pageID: nanoid(),
