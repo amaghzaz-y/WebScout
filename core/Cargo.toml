@@ -22,6 +22,8 @@ wasm-bindgen="0.2"
 patricia_tree = { version= "0.5.5", features=["serde"] }
 hashbrown = {version = "0.13.2", features=["serde"]}
 regex = "1.7.1"
+rust-stemmers = "1.2.0"
+whatlang = "0.16.2"
 
 [dependencies.uuid]
 version = "1.3.0"

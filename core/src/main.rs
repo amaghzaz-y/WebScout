@@ -1,20 +1,7 @@
-#![allow(dead_code, unused)]
-use std::{
-    collections::{BTreeMap, BTreeSet, Bound, HashSet},
-    fs,
-    io::{read_to_string, Write},
-    path::{Path, PathBuf},
-};
-
-use webscout::{
-    document::Document,
-    index::Index,
-    query::Query,
-    tokenizer::{self, Tokenizer},
-    utils::standard_deviation,
-    WebScout,
-};
-
+#![allow(dead_code)]
+extern crate rust_stemmers;
+use webscout::parser::Parser;
 fn main() {
-    println!("hello");
+    let parser = Parser::new();
+    // parser.parse_text("34dsd".to_string());
 }

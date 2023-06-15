@@ -7,7 +7,6 @@ use alloc::borrow::ToOwned;
 use alloc::string::String;
 use alloc::vec::Vec;
 use hashbrown::{HashMap, HashSet};
-use regex::Regex;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -47,15 +46,16 @@ impl Document {
 
     // index text document UTF-8, into tokens, and their position on the document
     fn index_string(&mut self, text: &mut str, tokenizer: &mut Tokenizer) {
-        let re = Regex::new(r#"\W+"#).unwrap();
-        let mut count: u32 = 0;
-        re.split(&text.to_ascii_lowercase())
-            .map(|s| {
-                count += 1;
-                (tokenizer.tokenize(s).unwrap_or(s.to_owned()), count)
-            })
-            .for_each(|(k, v)| self.add_entry(k, v));
-        self.count = count;
+        //"[\w--[[:punct:]]]+"g
+        // let re = Regex::new(r"[\w--[[:punct:]]]+").unwrap();
+        // let mut count: u32 = 0;
+        // re.find(text)
+        //     .map(|s| {
+        //         count += 1;
+        //         (tokenizer.tokenize(s).unwrap_or(s.to_owned()), count)
+        //     })
+        //     .for_each(|(k, v)| self.add_entry(k, v));
+        // self.count = count;
     }
 
     // adds the token and its positions to a hashmap
