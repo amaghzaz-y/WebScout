@@ -1,7 +1,6 @@
 #![no_std]
 extern crate alloc;
-pub mod document;
-// pub mod index;
+pub mod indexer;
 pub mod jaro;
 pub mod parser;
 // pub mod query;
