@@ -1,14 +1,19 @@
 use crate::stemmer::Stemmer;
 use crate::utils::mean;
 use alloc::collections::BTreeMap;
+use alloc::string::ToString;
 use alloc::{string::String, vec::Vec};
 
 #[derive(Debug)]
 pub struct Stem {
-    stem: String,
+    value: String,
     position: usize,
 }
-
+impl Stem {
+    pub fn value(&self) -> String {
+        self.value.to_string()
+    }
+}
 pub struct Token {
     pub value: String,
     pub frequency: usize,
@@ -23,7 +28,7 @@ pub fn parse_text(text: &str) -> Vec<Stem> {
     let re = regex::Regex::new(r"[\w--[[:punct:]]]+").unwrap();
     for (pos, mat) in re.find_iter(text).enumerate() {
         stems.push(Stem {
-            stem: stemmer.stem(mat.as_str()),
+            value: stemmer.stem(mat.as_str()),
             position: pos,
         })
     }
@@ -36,7 +41,7 @@ pub fn normalize(stems: Vec<Stem>) -> Vec<Token> {
     // construct the frequency map
     for stem in stems {
         frequency_map
-            .entry(stem.stem)
+            .entry(stem.value)
             .or_insert_with(Vec::new)
             .push(stem.position);
     }

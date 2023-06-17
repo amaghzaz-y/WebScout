@@ -15,20 +15,26 @@ pub struct Indexer {
 // a record consists of a resource title which is the origin of the token,
 // frequency and mean posistion of the same token
 #[derive(Clone)]
-struct Record {
-    resource: String,
-    frequency: usize,
-    mean: usize,
+pub struct Record {
+    pub resource: String,
+    pub frequency: usize,
+    pub mean: usize,
 }
 
 // a collection consists of a value which is the token and records
 #[derive(Clone)]
 pub struct Collection {
-    token: String,
-    records: Vec<Record>,
+    pub token: String,
+    pub records: Vec<Record>,
 }
 
 impl Indexer {
+    pub fn new() -> Indexer {
+        Indexer {
+            collections: BTreeMap::new(),
+            metadata: BTreeMap::new(),
+        }
+    }
     // title should be unique as its acting an ID
     pub fn index_text(&mut self, title: &str, text: &str, metadata: Option<&str>) {
         let stems = parser::parse_text(text);
@@ -48,13 +54,7 @@ impl Indexer {
                         frequency: token.frequency,
                         mean: token.mean_position,
                     }]),
-                })
-                .records
-                .push(Record {
-                    resource: resource.to_string(),
-                    frequency: token.frequency,
-                    mean: token.mean_position,
-                })
+                });
         }
     }
 
