@@ -51,6 +51,7 @@ impl Indexer {
                 })
         }
     }
+    
     pub fn insert_metadata(&mut self, title: &str, metadata: &str) {
         self.metadata.insert(title.to_owned(), metadata.to_owned());
     }

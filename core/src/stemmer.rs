@@ -13,6 +13,10 @@ impl Stemmer {
         }
     }
 
+    pub fn set_lang(&mut self, lang: rust_stemmers::Algorithm) {
+        self.stemmer = rust_stemmers::Stemmer::create(lang);
+    }
+
     pub fn detect_lang(&mut self, text: &str) -> whatlang::Lang {
         let lang = whatlang::detect_lang(text).unwrap_or(whatlang::Lang::Eng);
         match lang {
@@ -59,5 +63,34 @@ impl Stemmer {
 
     pub fn stem(&mut self, value: &str) -> String {
         self.stemmer.stem(&value.to_lowercase()).to_string()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Stemmer;
+
+    #[test]
+    fn stem_english() {
+        let mut stemmer = Stemmer::new();
+        assert_eq!("fli", stemmer.stem("flying"))
+    }
+    #[test]
+    fn stem_french() {
+        let mut stemmer = Stemmer::new();
+        stemmer.set_lang(rust_stemmers::Algorithm::French);
+        assert_eq!("voitur", stemmer.stem("voitures"))
+    }
+    #[test]
+    fn detect_lang_english() {
+        let mut stemmer = Stemmer::new();
+        let text = "hello everybody, how are you ?";
+        assert_eq!(whatlang::Lang::Eng, stemmer.detect_lang(text))
+    }
+    #[test]
+    fn detect_lang_french() {
+        let mut stemmer = Stemmer::new();
+        let text = "bonjour, comment vas-tu ?";
+        assert_eq!(whatlang::Lang::Fra, stemmer.detect_lang(text))
     }
 }
