@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 extern crate rust_stemmers;
-use webscout::stopwords::is_stopword;
+use webscout::parser;
 fn main() {
-    let status = is_stopword(&whatlang::Lang::Eng, "fly");
-    println!("{:?}", status)
+    let tokens = parser::Parser::parse_text("your and i are flying tonight baby i love you");
+    println!("{:?}", tokens)
 }
