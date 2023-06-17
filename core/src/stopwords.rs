@@ -58,3 +58,25 @@ pub fn is_stopword(lang: &whatlang::Lang, value: &str) -> bool {
         _ => return ENGLISH.contains(value),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::is_stopword;
+
+    #[test]
+    fn english_true_stopword() {
+        assert_eq!(true, is_stopword(&whatlang::Lang::Eng, "you"))
+    }
+    #[test]
+    fn english_false_stopword() {
+        assert_eq!(false, is_stopword(&whatlang::Lang::Eng, "flying"))
+    }
+    #[test]
+    fn french_true_stopword() {
+        assert_eq!(true, is_stopword(&whatlang::Lang::Fra, "mais"))
+    }
+    #[test]
+    fn french_false_stopword() {
+        assert_eq!(false, is_stopword(&whatlang::Lang::Eng, "voiture"))
+    }
+}
