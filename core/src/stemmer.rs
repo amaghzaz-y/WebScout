@@ -13,7 +13,7 @@ impl Stemmer {
         }
     }
 
-    pub fn detect_lang(&mut self, text: &str) {
+    pub fn detect_lang(&mut self, text: &str) -> whatlang::Lang {
         let lang = whatlang::detect_lang(text).unwrap_or(whatlang::Lang::Eng);
         match lang {
             whatlang::Lang::Ara => self.stemmer = rust_stemmers::Stemmer::create(Algorithm::Arabic),
@@ -54,6 +54,7 @@ impl Stemmer {
             }
             _ => self.stemmer = rust_stemmers::Stemmer::create(Algorithm::English),
         }
+        lang
     }
 
     pub fn stem(&mut self, value: &str) -> String {
