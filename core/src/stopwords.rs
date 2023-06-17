@@ -28,6 +28,7 @@ lazy_static! {
     pub static ref GERMAN: HashSet<String> = text_to_hashset(german::DE_STOPWORDS);
     pub static ref GREEK: HashSet<String> = text_to_hashset(greek::EL_STOPWORDS);
     pub static ref HUNGARIAN: HashSet<String> = text_to_hashset(hungarian::HU_STOPWORDS);
+    pub static ref ITALIAN: HashSet<String> = text_to_hashset(italian::IT_STOPWORDS);
     pub static ref PORTUGUESE: HashSet<String> = text_to_hashset(portuguese::PT_STOPWORDS);
     pub static ref ROMANIAN: HashSet<String> = text_to_hashset(romanian::RO_STOPWORDS);
     pub static ref RUSSIAN: HashSet<String> = text_to_hashset(russian::RU_STOPWORDS);
