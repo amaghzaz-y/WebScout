@@ -1,5 +1,6 @@
-use alloc::string::String;
+use alloc::string::{String, ToString};
 use cfg_if::cfg_if;
+use hashbrown::HashSet;
 cfg_if! {
     if #[cfg(feature = "console_error_panic_hook")] {
         extern crate console_error_panic_hook;
@@ -45,4 +46,10 @@ pub fn to_lower_alphanumeric(s: &str) -> String {
         }
     }
     result
+}
+
+pub fn text_to_hashset(text: &str) -> HashSet<String> {
+    text.split_whitespace()
+        .map(|word| word.to_string())
+        .collect()
 }
