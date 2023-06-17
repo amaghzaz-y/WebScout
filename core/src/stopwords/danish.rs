@@ -1,4 +1,4 @@
-const DA_STOPWORDS: &'static str = "ad
+pub const DA_STOPWORDS: &'static str = "ad
 af
 aldrig
 alle

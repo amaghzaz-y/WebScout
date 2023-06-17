@@ -1,4 +1,4 @@
-const PT_STOPWORDS: &'static str = "a
+pub const PT_STOPWORDS: &'static str = "a
 acerca
 adeus
 agora

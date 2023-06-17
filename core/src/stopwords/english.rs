@@ -1,4 +1,4 @@
-const EN_STOPWORDS: &'static str = "'ll
+pub const EN_STOPWORDS: &'static str = "'ll
 'tis
 'twas
 've

@@ -1,4 +1,4 @@
-const IT_STOPWORDS: &'static str = "a
+pub const IT_STOPWORDS: &'static str = "a
 abbastanza
 abbia
 abbiamo

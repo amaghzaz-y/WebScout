@@ -1,4 +1,4 @@
-const SV_STOPWORDS: &'static str = "aderton
+pub const SV_STOPWORDS: &'static str = "aderton
 adertonde
 adjö
 aldrig

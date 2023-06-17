@@ -1,4 +1,4 @@
-const TR_STOPWORDS: &'static str = "acaba
+pub const TR_STOPWORDS: &'static str = "acaba
 acep
 adamakıllı
 adeta

@@ -1,4 +1,4 @@
-const NL_STOPWORDS: &'static str = "aan
+pub const NL_STOPWORDS: &'static str = "aan
 aangaande
 aangezien
 achte

@@ -1,4 +1,4 @@
-const FI_STOPWORDS: &'static str = "aiemmin
+pub const FI_STOPWORDS: &'static str = "aiemmin
 aika
 aikaa
 aikaan

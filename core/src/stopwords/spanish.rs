@@ -1,4 +1,4 @@
-const ES_STOPWORDS: &'static str = "0
+pub const ES_STOPWORDS: &'static str = "0
 1
 2
 3

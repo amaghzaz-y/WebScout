@@ -1,4 +1,4 @@
-const HU_STOPWORDS: &'static str = "a
+pub const HU_STOPWORDS: &'static str = "a
 abba
 abban
 abból

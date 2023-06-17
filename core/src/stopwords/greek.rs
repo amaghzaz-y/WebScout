@@ -1,4 +1,4 @@
-const EL_STOPWORDS: &'static str = "ένα
+pub const EL_STOPWORDS: &'static str = "ένα
 έναν
 ένας
 αι
