@@ -4,10 +4,14 @@ use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
 use alloc::string::{String, ToString};
 use alloc::vec::Vec;
+use bloomfilter::Bloom;
 use hashbrown::HashMap;
 use nanoid::nanoid;
+use serde::{Deserialize, Serialize};
 
 use crate::parser::{self, FrequencyStats, Token};
+
+#[derive(Serialize, Deserialize)]
 pub struct Indexer {
     id: String,
     filters: Vec<Filter>,
@@ -15,6 +19,7 @@ pub struct Indexer {
     document_count: usize,
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct Document {
     pub id: String,
     pub title: String,
@@ -23,10 +28,13 @@ pub struct Document {
     pub index: BTreeMap<String, FrequencyStats>,
     pub token_count: usize,
 }
+
+#[derive(Serialize, Deserialize)]
 pub struct Filter {
     pub id: String,
-    pub filter: Vec<u8>,
+    pub filter: Bloom<String>,
 }
+
 #[derive(Clone)]
 pub struct TextDocument {
     pub title: String,
@@ -74,5 +82,22 @@ impl Indexer {
             token_count: index.len(),
             index: index,
         }
+    }
+
+    pub fn filter_query(&self, query: &str) -> BTreeMap<String, Vec<String>> {
+        let mut parser = parser::Parser::new();
+        let stems = parser.parse_text(query);
+        let mut freq_map: BTreeMap<String, Vec<String>> = BTreeMap::new();
+        for stem in &stems {
+            for filter in &self.filters {
+                if filter.filter.check(&stem.value) {
+                    freq_map
+                        .entry(filter.id.to_owned())
+                        .or_default()
+                        .push(stem.value())
+                }
+            }
+        }
+        freq_map
     }
 }

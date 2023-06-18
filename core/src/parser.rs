@@ -6,10 +6,11 @@ use alloc::string::ToString;
 use alloc::{string::String, vec::Vec};
 use bloomfilter::Bloom;
 use hashbrown::HashMap;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct Stem {
-    value: String,
+    pub value: String,
     position: usize,
 }
 impl Stem {
@@ -22,7 +23,7 @@ pub struct Token {
     pub frequency: usize,
     pub mean_position: usize,
 }
-
+#[derive(Serialize, Deserialize)]
 pub struct FrequencyStats {
     pub frequency: usize,
     pub mean_position: usize,
@@ -81,7 +82,7 @@ impl Parser {
             .collect()
     }
 
-    pub fn get_filter(&self) -> Vec<u8> {
-        self.bloom_filter.bitmap()
+    pub fn get_filter(&self) -> Bloom<String> {
+        self.bloom_filter.to_owned()
     }
 }
