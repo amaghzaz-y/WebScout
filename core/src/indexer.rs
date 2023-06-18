@@ -84,20 +84,5 @@ impl Indexer {
         }
     }
 
-    pub fn filter_query(&self, query: &str) -> BTreeMap<String, Vec<String>> {
-        let mut parser = parser::Parser::new();
-        let stems = parser.parse_text(query);
-        let mut freq_map: BTreeMap<String, Vec<String>> = BTreeMap::new();
-        for stem in &stems {
-            for filter in &self.filters {
-                if filter.filter.check(&stem.value) {
-                    freq_map
-                        .entry(filter.id.to_owned())
-                        .or_default()
-                        .push(stem.value())
-                }
-            }
-        }
-        freq_map
-    }
+
 }

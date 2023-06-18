@@ -1,67 +1,52 @@
-// use crate::document::Weight;
-// use crate::utils::standard_deviation;
-// use crate::{index::Index, tokenizer::Tokenizer};
-// use alloc::borrow::ToOwned;
-// use alloc::string::String;
-// use alloc::vec::Vec;
-// use hashbrown::HashMap;
-// use regex::Regex;
-// use wasm_bindgen::prelude::*;
+use alloc::{borrow::ToOwned, collections::BTreeMap, string::String, vec::Vec};
+use bloomfilter::Bloom;
+use whatlang::Lang;
 
-// #[wasm_bindgen]
-// pub struct Query {
-//     index: Index,
-// }
+use crate::{
+    indexer::Filter,
+    parser::{Parser, Stem},
+};
 
-// impl Query {
-//     pub fn new(index: &Index) -> Query {
-//         let query = Query {
-//             index: index.to_owned(),
-//         };
-//         return query;
-//     }
-//     pub fn default() -> Query {
-//         Query {
-//             index: Index::new(),
-//         }
-//     }
+pub struct Query {
+    language: Lang,
+    query: Vec<String>,
+}
+impl Query {
+    pub fn new(query: &str) -> Query {
+        let mut parser = Parser::new();
+        let mut tokens = parser.parse_query(query);
+        tokens.sort();
+        tokens.dedup();
+        Query {
+            language: parser.get_language(),
+            query: tokens,
+        }
+    }
 
-//     pub fn setup(&mut self, index: &Index, tokenizer: &Tokenizer) {
-//         self.index = index.to_owned();
-//     }
+    // checks the bloom filter of each document and returns the top 10 most relevant ones
+    pub fn filter_query(&self, query: &str, filters: &Vec<Filter>) -> Vec<String> {
+        let mut freq_map: BTreeMap<String, usize> = BTreeMap::new();
 
-//     // fn tokenize_query(&mut self, mut query: String) -> Vec<String> {
-//     //     query.make_ascii_lowercase();
-//     //     let re = Regex::new(r#"\W+"#).unwrap();
-//     //     re.split(&query)
-//     //         .map(|s| self.tokenizer.tokenize(s).unwrap_or(s.to_owned()))
-//     //         .collect::<Vec<String>>()
-//     // }
+        for token in &self.query {
+            for filter in filters {
+                if filter.filter.check(&token) {
+                    freq_map.entry(filter.id.to_owned()).and_modify(|x| *x += 1);
+                }
+            }
+        }
 
-//     fn filter(&self, tokens: &mut Vec<String>) -> Vec<(String, HashMap<u32, Weight>)> {
-//         tokens.dedup();
-//         tokens
-//             .iter()
-//             .map(|t| (t, self.index.get(t)))
-//             .filter(|(_, t)| t.is_some())
-//             .map(|(s, t)| (s.to_owned(), t.unwrap().to_owned()))
-//             .collect()
-//     }
+        let mut score_vec: Vec<(String, usize)> = freq_map.into_iter().collect();
 
-//     fn transpose(
-//         &self,
-//         tokens: &[(String, HashMap<u32, Weight>)],
-//     ) -> HashMap<u32, Vec<(String, Weight)>> {
-//         let mut map = HashMap::new();
-//         for (t, m) in tokens {
-//             for (d, w) in m {
-//                 map.entry(*d)
-//                     .or_insert_with(Vec::new)
-//                     .push((t.clone(), w.clone()));
-//             }
-//         }
-//         map
-//     }
+        score_vec.sort_by(|(_, a_score), (_, b_score)| b_score.cmp(a_score));
+
+        let result_len = score_vec.len().min(10);
+        let result: Vec<String> = score_vec[..result_len]
+            .iter()
+            .map(|(x, _)| x.to_owned())
+            .collect();
+        result
+    }
+}
 
 //     fn score(
 //         &self,
