@@ -48,7 +48,8 @@ hai
 hanno
 ho
 il
-indietro	invece
+indietro
+invece
 io
 la
 lavoro
@@ -97,7 +98,8 @@ rispetto
 sara
 secondo
 sei
-sembra	sembrava
+sembra
+sembrava
 senza
 sette
 sia

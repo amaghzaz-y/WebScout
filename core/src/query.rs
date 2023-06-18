@@ -29,7 +29,7 @@ impl Query {
 
         for token in &self.query {
             for filter in filters {
-                if filter.filter.check(&token) {
+                if filter.filter.check(&token.to_owned().into()) {
                     freq_map.entry(filter.id.to_owned()).and_modify(|x| *x += 1);
                 }
             }

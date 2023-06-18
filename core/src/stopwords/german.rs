@@ -48,7 +48,8 @@ hatte
 hatten
 hattest
 hattet
-hier	hinter
+hier
+hinter
 ich
 ihr
 ihre
@@ -97,7 +98,8 @@ sonst
 soweit
 sowie
 und
-unser	unsere
+unser
+unsere
 unter
 vom
 von

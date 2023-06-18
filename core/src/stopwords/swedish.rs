@@ -356,7 +356,8 @@ utanför
 ute
 vad
 vänster
-vänstra	var
+vänstra
+var
 vår
 vara
 våra

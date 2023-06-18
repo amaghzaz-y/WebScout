@@ -3,6 +3,7 @@ use crate::stopwords::is_stopword;
 use crate::utils;
 use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
+use alloc::rc::{self, Rc};
 use alloc::string::ToString;
 use alloc::{string::String, vec::Vec};
 use bloomfilter::Bloom;
@@ -12,7 +13,7 @@ use whatlang::Lang;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Stem {
-    pub value: String,
+    pub value: Rc<str>,
     position: usize,
 }
 impl Stem {
@@ -21,7 +22,7 @@ impl Stem {
     }
 }
 pub struct Token {
-    pub value: String,
+    pub value: Rc<str>,
     pub frequency: usize,
     pub mean_position: usize,
 }
@@ -31,7 +32,7 @@ pub struct FrequencyStats {
     pub mean_position: usize,
 }
 pub struct Parser {
-    bloom_filter: Option<Bloom<String>>,
+    bloom_filter: Option<Bloom<Rc<str>>>,
     language: Lang,
 }
 
@@ -48,12 +49,12 @@ impl Parser {
         let mut stems: Vec<Stem> = Vec::new();
         let mut stemmer = Stemmer::new();
         self.language = stemmer.detect_lang(text);
-        let mut bloom_filter = Bloom::new_for_fp_rate(1000000, 0.1);
+        let mut bloom_filter: Bloom<Rc<str>> = Bloom::new_for_fp_rate(1000000, 0.1);
         let re = regex::Regex::new(r"[\w--[[:punct:]]]+").unwrap();
         for (pos, mat) in re.find_iter(text).enumerate() {
             // filter stopwords
             if !is_stopword(&self.language, mat.as_str()) {
-                let stem = stemmer.stem(mat.as_str());
+                let stem: Rc<str> = Rc::from(stemmer.stem(mat.as_str()));
                 bloom_filter.check_and_set(&stem);
                 stems.push(Stem {
                     value: stem,
@@ -74,20 +75,20 @@ impl Parser {
         for mat in re.find_iter(query) {
             if !is_stopword(&self.language, mat.as_str()) {
                 let stem = stemmer.stem(mat.as_str());
-                stems.push(stem)
+                stems.push(stem.into())
             }
         }
         stems
     }
 
     // calculates mean average position and frequency for each token
-    pub fn normalize(&self, stems: &Vec<Stem>) -> BTreeMap<String, FrequencyStats> {
+    pub fn normalize(&self, stems: &Vec<Stem>) -> BTreeMap<Rc<str>, FrequencyStats> {
         // a map where the key is the token value, and the value is the a vector of its positions
-        let mut frequency_map: BTreeMap<String, Vec<usize>> = BTreeMap::new();
+        let mut frequency_map: BTreeMap<Rc<str>, Vec<usize>> = BTreeMap::new();
         // construct the frequency map
         for stem in stems {
             frequency_map
-                .entry(stem.value.to_string())
+                .entry(stem.value.clone())
                 .or_insert_with(Vec::new)
                 .push(stem.position);
         }
@@ -108,7 +109,7 @@ impl Parser {
             .collect()
     }
 
-    pub fn get_filter(&self) -> Bloom<String> {
+    pub fn get_filter(&self) -> Bloom<Rc<str>> {
         self.bloom_filter
             .to_owned()
             .unwrap_or(Bloom::new_for_fp_rate(1000000, 0.1))

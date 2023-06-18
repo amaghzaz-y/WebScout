@@ -27,7 +27,8 @@ pub const EL_STOPWORDS: &'static str = "ή
 γε
 γα^
 ἡ
-ἤ	καί
+ἤ
+καί
 κατά
 μέν
 μετά
@@ -56,7 +57,8 @@ pub const EL_STOPWORDS: &'static str = "ή
 τῆσ
 τῇ
 τι
-τί	τισ
+τί
+τισ
 τίσ
 τό
 τοί

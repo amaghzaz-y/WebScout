@@ -48,7 +48,8 @@ então
 está
 estão
 estado
-estar	estará
+estar
+estará
 este
 estes
 esteve
@@ -97,7 +98,8 @@ pegar
 pelo
 pessoas
 pode
-poderá	podia
+poderá
+podia
 por
 porque
 povo

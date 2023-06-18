@@ -43,6 +43,6 @@ pub fn to_lower_alphanumeric(s: &str) -> String {
 
 pub fn text_to_hashset(text: &str) -> HashSet<Arc<str>> {
     text.split_whitespace()
-        .map(|word| word.to_string().into())
+        .map(|word| Arc::from(word))
         .collect()
 }

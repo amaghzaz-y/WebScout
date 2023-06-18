@@ -44,7 +44,8 @@ hors
 ici
 il
 ils
-je	juste
+je
+juste
 la
 le
 les
@@ -89,7 +90,8 @@ sien
 son
 sont
 sous
-soyez	sujet
+soyez
+sujet
 sur
 ta
 tandis

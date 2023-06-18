@@ -2,7 +2,9 @@
 
 use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
+use alloc::rc::Rc;
 use alloc::string::{String, ToString};
+use alloc::sync::Arc;
 use alloc::vec::Vec;
 use bloomfilter::Bloom;
 use hashbrown::HashMap;
@@ -25,14 +27,14 @@ pub struct Document {
     pub title: String,
     pub resource: String,
     pub metadata: String,
-    pub index: BTreeMap<String, FrequencyStats>,
+    pub index: BTreeMap<Rc<str>, FrequencyStats>,
     pub token_count: usize,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Filter {
     pub id: String,
-    pub filter: Bloom<String>,
+    pub filter: Bloom<Rc<str>>,
 }
 
 #[derive(Clone)]
@@ -83,6 +85,4 @@ impl Index {
             index: index,
         }
     }
-
-
 }

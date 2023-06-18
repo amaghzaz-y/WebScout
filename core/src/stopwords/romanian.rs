@@ -98,7 +98,8 @@ departe
 deşi
 din
 dinaintea
-dintr-	dintre
+dintr
+dintre
 doi
 doilea
 două
@@ -197,7 +198,8 @@ patru
 patrulea
 pe
 pentru
-peste	pic
+peste
+pic
 pînă
 poate
 pot

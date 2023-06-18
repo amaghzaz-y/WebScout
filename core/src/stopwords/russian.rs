@@ -145,7 +145,8 @@ pub const RU_STOPWORDS: &'static str = "
 вся
 всё
 всюду
-г	год
+г
+год
 говорил
 говорит
 года

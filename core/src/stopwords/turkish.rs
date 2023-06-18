@@ -38,7 +38,8 @@ doksan
 dokuz
 dört
 elli
-en	gibi
+en
+gibi
 hem
 hep
 hepsi

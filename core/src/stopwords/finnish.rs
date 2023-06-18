@@ -248,7 +248,8 @@ joutuvat
 juuri
 kahdeksan
 kahdeksannen
-kahdella	kahdelle
+kahdella
+kahdelle
 kahdelta
 kahden
 kahdessa

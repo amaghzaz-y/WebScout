@@ -1,5 +1,9 @@
 extern crate alloc;
-use alloc::string::{String, ToString};
+use alloc::{
+    rc::Rc,
+    string::{String, ToString},
+    sync::Arc,
+};
 use rust_stemmers::Algorithm;
 pub struct Stemmer {
     stemmer: rust_stemmers::Stemmer,
