@@ -1,9 +1,11 @@
 use crate::stemmer::Stemmer;
 use crate::utils;
+use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
 use alloc::string::ToString;
 use alloc::{string::String, vec::Vec};
 use bloomfilter::Bloom;
+use hashbrown::HashMap;
 
 #[derive(Debug)]
 pub struct Stem {
@@ -21,6 +23,10 @@ pub struct Token {
     pub mean_position: usize,
 }
 
+pub struct FrequencyStats {
+    pub frequency: usize,
+    pub mean_position: usize,
+}
 pub struct Parser {
     bloom_filter: Bloom<String>,
 }
@@ -48,28 +54,34 @@ impl Parser {
         stems
     }
     // calculates mean average position and frequency for each token
-    pub fn normalize(&self, stems: Vec<Stem>) -> Vec<Token> {
+    pub fn normalize(&self, stems: &Vec<Stem>) -> BTreeMap<String, FrequencyStats> {
         // a map where the key is the token value, and the value is the a vector of its positions
         let mut frequency_map: BTreeMap<String, Vec<usize>> = BTreeMap::new();
         // construct the frequency map
         for stem in stems {
             frequency_map
-                .entry(stem.value)
+                .entry(stem.value.to_string())
                 .or_insert_with(Vec::new)
                 .push(stem.position);
         }
-        // calculates the mean and frequency for each token and collects it as a vector
+        // calculates the mean and frequency for each token and collects it in a HashMap
         frequency_map
             .into_iter()
             .map(|(value, positions)| {
                 let freq = positions.len();
                 let mean = utils::mean(&positions);
-                Token {
+                (
                     value,
-                    frequency: freq,
-                    mean_position: mean,
-                }
+                    FrequencyStats {
+                        frequency: freq,
+                        mean_position: mean,
+                    },
+                )
             })
             .collect()
+    }
+
+    pub fn get_filter(&self) -> Vec<u8> {
+        self.bloom_filter.bitmap()
     }
 }
