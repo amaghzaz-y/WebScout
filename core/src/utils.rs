@@ -1,4 +1,8 @@
-use alloc::string::{String, ToString};
+use alloc::{
+    rc::{self, Rc},
+    string::{String, ToString},
+    sync::Arc,
+};
 use cfg_if::cfg_if;
 use hashbrown::HashSet;
 cfg_if! {
@@ -37,8 +41,8 @@ pub fn to_lower_alphanumeric(s: &str) -> String {
     result
 }
 
-pub fn text_to_hashset(text: &str) -> HashSet<String> {
+pub fn text_to_hashset(text: &str) -> HashSet<Arc<str>> {
     text.split_whitespace()
-        .map(|word| word.to_string())
+        .map(|word| word.to_string().into())
         .collect()
 }
