@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use crate::parser::{self, FrequencyStats, Token};
 
 #[derive(Serialize, Deserialize)]
-pub struct Indexer {
+pub struct Index {
     id: String,
     filters: Vec<Filter>,
     token_count: usize,
@@ -43,9 +43,9 @@ pub struct TextDocument {
     pub text: String,
 }
 
-impl Indexer {
-    pub fn new() -> Indexer {
-        Indexer {
+impl Index {
+    pub fn new() -> Index {
+        Index {
             id: nanoid!(),
             filters: Vec::new(),
             token_count: 0,

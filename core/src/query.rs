@@ -3,7 +3,7 @@ use bloomfilter::Bloom;
 use whatlang::Lang;
 
 use crate::{
-    indexer::Filter,
+    index::Filter,
     parser::{Parser, Stem},
 };
 
