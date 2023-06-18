@@ -35,10 +35,11 @@ impl Indexer {
             metadata: BTreeMap::new(),
         }
     }
-    // title should be unique as its acting an ID
+    // title should be unique as its acting as an ID
     pub fn index_text(&mut self, title: &str, text: &str, metadata: Option<&str>) {
-        let stems = parser::parse_text(text);
-        let tokens = parser::normalize(stems);
+        let mut parser = parser::Parser::new();
+        let stems = parser.parse_text(text);
+        let tokens = parser.normalize(stems);
         self.collect(title, &tokens);
         self.insert_metadata(title, metadata.unwrap_or("no metadata"));
     }
