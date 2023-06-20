@@ -13,7 +13,7 @@ use whatlang::Lang;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Stem {
-    pub value: Rc<str>,
+    pub value: String,
     position: usize,
 }
 impl Stem {
@@ -22,7 +22,7 @@ impl Stem {
     }
 }
 pub struct Token {
-    pub value: Rc<str>,
+    pub value: String,
     pub frequency: usize,
     pub mean_position: usize,
 }
@@ -32,7 +32,7 @@ pub struct FrequencyStats {
     pub mean_position: usize,
 }
 pub struct Parser {
-    bloom_filter: Option<Bloom<Rc<str>>>,
+    bloom_filter: Option<Bloom<String>>,
     language: Lang,
 }
 
@@ -49,13 +49,13 @@ impl Parser {
         let mut stems: Vec<Stem> = Vec::new();
         let mut stemmer = Stemmer::new();
         self.language = stemmer.detect_lang(text);
-        let mut bloom_filter: Bloom<Rc<str>> = Bloom::new_for_fp_rate(1000000, 0.1);
+        let mut bloom_filter: Bloom<String> = Bloom::new_for_fp_rate(1000000, 0.1);
         let re = regex::Regex::new(r"[\w--[[:punct:]]]+").unwrap();
         for (pos, mat) in re.find_iter(text).enumerate() {
             // filter stopwords
             if !is_stopword(&self.language, mat.as_str()) {
-                let stem: Rc<str> = Rc::from(stemmer.stem(mat.as_str()));
-                bloom_filter.check_and_set(&stem);
+                let stem = stemmer.stem(mat.as_str());
+                bloom_filter.check_and_set(&stem.to_owned());
                 stems.push(Stem {
                     value: stem,
                     position: pos,
@@ -82,9 +82,9 @@ impl Parser {
     }
 
     // calculates mean average position and frequency for each token
-    pub fn normalize(&self, stems: &Vec<Stem>) -> BTreeMap<Rc<str>, FrequencyStats> {
+    pub fn normalize(&self, stems: &Vec<Stem>) -> BTreeMap<String, FrequencyStats> {
         // a map where the key is the token value, and the value is the a vector of its positions
-        let mut frequency_map: BTreeMap<Rc<str>, Vec<usize>> = BTreeMap::new();
+        let mut frequency_map: BTreeMap<String, Vec<usize>> = BTreeMap::new();
         // construct the frequency map
         for stem in stems {
             frequency_map
@@ -109,7 +109,7 @@ impl Parser {
             .collect()
     }
 
-    pub fn get_filter(&self) -> Bloom<Rc<str>> {
+    pub fn get_filter(&self) -> Bloom<String> {
         self.bloom_filter
             .to_owned()
             .unwrap_or(Bloom::new_for_fp_rate(1000000, 0.1))

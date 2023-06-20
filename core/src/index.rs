@@ -27,14 +27,14 @@ pub struct Document {
     pub title: String,
     pub resource: String,
     pub metadata: String,
-    pub index: BTreeMap<Rc<str>, FrequencyStats>,
+    pub index: BTreeMap<String, FrequencyStats>,
     pub token_count: usize,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Filter {
     pub id: String,
-    pub filter: Bloom<Rc<str>>,
+    pub filter: Bloom<String>,
 }
 
 #[derive(Clone)]
@@ -64,8 +64,8 @@ impl Index {
         let id = nanoid!();
         // update indexer struct
         self.filters.push(Filter {
-            id: id.to_owned(),
-            filter: filter,
+            id: id.clone(),
+            filter,
         });
         self.document_count += 1;
         self.token_count += index.len();
