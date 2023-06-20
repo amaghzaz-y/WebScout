@@ -9,16 +9,19 @@ export default class Spider {
 	async Fetch(url: string): Promise<string | null> {
 		try {
 			const body = await fetch(url)
-			let type = body.headers.get('Content-Type')
+			let type = body.headers.get('Content-Type') as string
+
 			if (type !== null) {
 				let mime = type.split('/')
-				if (mime[0].trim() == 'text') {
+				if (mime[0].trim() == 'text' || mime[1].trim() == 'xml' || mime[1].trim() == 'json') {
 					return await body.text()
 				}
 			}
+			console.log(`SPIDER::TYPE::UNSUPPORTED::${type}`)
 			return null
 		}
 		catch {
+			console.log("SPIDER::FETCH::ERROR")
 			return null
 		}
 	}
@@ -43,6 +46,7 @@ export default class Spider {
 				content: text
 			}
 		} catch (e) {
+			console.log("PARSE::ERROR")
 			return null
 		}
 	}
@@ -57,18 +61,19 @@ export default class Spider {
 			const regex = /(?:https?|ftp):\/\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:% _\+.~#?&//=]*)/g;
 			const matches = body.match(regex);
 			if (matches == null) {
+				console.log("CRAWL::DRY")
 				return null
 			}
 			let urls = new Set<string>()
 			for (const e of matches) {
-				let hn = parseURL(e).resource
-				if (hn == hostname) {
+				if (parseURL(e).resource === hostname) {
 					urls.add(e)
 				}
 			}
 			return urls
 		}
-		catch {
+		catch (e) {
+			console.log(`Error :: ${EntryURL} :: ${e}`)
 			return null
 		}
 	}

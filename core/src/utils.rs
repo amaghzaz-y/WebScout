@@ -1,5 +1,11 @@
-use alloc::string::String;
+use alloc::{
+    borrow::ToOwned,
+    rc::{self, Rc},
+    string::{String, ToString},
+    sync::Arc,
+};
 use cfg_if::cfg_if;
+use hashbrown::HashSet;
 cfg_if! {
     if #[cfg(feature = "console_error_panic_hook")] {
         extern crate console_error_panic_hook;
@@ -10,20 +16,9 @@ cfg_if! {
     }
 }
 
-pub fn mean(numbers: &[f32]) -> f32 {
-    let mean = numbers.iter().sum::<f32>() / numbers.len() as f32;
-    return mean.floor();
-}
-
-pub fn standard_deviation(numbers: &[f32]) -> f32 {
-    let mean = mean(numbers);
-    let deviation_squared = numbers.iter().map(|&x| (x - mean).powf(2.0)).sum::<f32>();
-    let deviation = (deviation_squared / (numbers.len() - 1) as f32).sqrt();
-    if deviation > 0.0 {
-        return deviation.floor();
-    } else {
-        return 0.0;
-    }
+pub fn mean(numbers: &[usize]) -> usize {
+    let mean = numbers.iter().sum::<usize>() / numbers.len();
+    return mean;
 }
 
 pub fn to_lower_alphanumeric(s: &str) -> String {
@@ -45,4 +40,20 @@ pub fn to_lower_alphanumeric(s: &str) -> String {
         }
     }
     result
+}
+
+pub fn text_to_hashset(text: &str) -> HashSet<String> {
+    text.split_whitespace()
+        .map(|word| word.to_owned())
+        .collect()
+}
+
+pub fn standard_deviation(data: &[f32]) -> f32 {
+    let n = data.len();
+    if n < 2 {
+        return 0.0;
+    }
+    let mean = data.iter().sum::<f32>() / n as f32;
+    let variance = data.iter().map(|x| (x - mean).powi(2)).sum::<f32>() / (n - 1) as f32;
+    variance.sqrt()
 }

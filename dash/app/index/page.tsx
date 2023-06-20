@@ -6,9 +6,7 @@ import Snackbar from '@mui/material/Snackbar';
 
 export default function IndexerPage() {
 	const [state, setState] = useState({
-		userID: "",
 		projectID: "",
-		language: "",
 		title: "",
 		body: "",
 	});
@@ -24,9 +22,7 @@ export default function IndexerPage() {
 
 	const handleIndex = async () => {
 		const body = {
-			userID: state.userID,
 			projectID: state.projectID,
-			language: state.language,
 			title: state.title,
 			body: state.body
 		};
@@ -59,14 +55,6 @@ export default function IndexerPage() {
 		<div className="w-full flex flex-col gap-2 p-3">
 			<div>Indexer page</div>
 			<TextField
-				label="User ID"
-				variant="outlined"
-				name="userID"
-				value={state.userID}
-				onChange={handleChange}
-
-			/>
-			<TextField
 				label="Project ID"
 				variant="outlined"
 				name="projectID"
@@ -74,14 +62,7 @@ export default function IndexerPage() {
 				onChange={handleChange}
 
 			/>
-			<TextField
-				label="Language"
-				variant="outlined"
-				name="language"
-				value={state.language}
-				onChange={handleChange}
 
-			/>
 			<TextField
 				label="Title"
 				variant="outlined"
