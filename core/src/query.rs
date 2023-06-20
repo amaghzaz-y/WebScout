@@ -1,9 +1,4 @@
-use alloc::{
-    borrow::ToOwned,
-    collections::BTreeMap,
-    string::String,
-    vec::{ Vec},
-};
+use alloc::{borrow::ToOwned, collections::BTreeMap, string::String, vec::Vec};
 
 use crate::{
     index::{Document, Filter},
@@ -83,9 +78,9 @@ impl Query {
         }
     }
     // computes the scores for each document, returns the scores sorted
-    pub fn results(&mut self) -> Vec<(String, f32)> {
+    pub fn results(&mut self) -> BTreeMap<String, f32> {
         self.normalize();
-        let mut scores: Vec<(String, f32)> = Vec::new();
+        let mut scores: BTreeMap<String, f32> = BTreeMap::new();
         for (doc_id, stats) in &self.search {
             let mut freq_ratio = 0.0;
             // ratio of query terms found in the document to the total number of terms
@@ -96,9 +91,8 @@ impl Query {
                 freq_ratio += (stat.frequency) as f32 / (self.max_freq_map[&stat.value]) as f32;
             }
             let score = (query_ratio * 5.0 + freq_ratio * 3.0 + (1.0 / deviation) * 2.0) / 10.0;
-            scores.push((doc_id.clone(), score));
+            scores.insert(doc_id.clone(), score);
         }
-        scores.sort_by(|(_, a_score), (_, b_score)| b_score.partial_cmp(&a_score).unwrap());
         scores
     }
 }

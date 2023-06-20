@@ -1,4 +1,3 @@
-
 use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
 use alloc::string::{String, ToString};
@@ -88,7 +87,7 @@ impl Index {
         query.filter_query(&self.filters)
     }
 
-    pub fn search_query(&mut self, text: &str, doc: &Vec<Document>) -> Vec<(String, f32)> {
+    pub fn search_query(&mut self, text: &str, doc: &Vec<Document>) -> BTreeMap<String, f32> {
         let mut query = Query::new(text);
         for doc in doc {
             query.search_document(doc);

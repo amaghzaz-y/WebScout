@@ -1,14 +1,13 @@
 [workspace]
-name = "webscout"
-version = "0.1.0"
-authors = ["Yassine AMAGHZAZ <yassine.amaghzaz@outlook.com>"]
-description = "Serverless site search built on top of Cloudlfare Workers"
-license = "MIT/Apache-2.0"
-repository = "https://github.com/AMAGHZAZ-Y/webscout"
-edition = "2021"
 members = [
     "core",
 	"server",
 	"worker",
 	"admin"
 ]
+
+[profile.release]
+opt-level = 3
+debug = 0
+overflow-checks = false
+lto = true
