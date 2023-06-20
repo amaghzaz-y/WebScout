@@ -16,7 +16,7 @@ use crate::query::Query;
 
 #[derive(Serialize, Deserialize)]
 pub struct Index {
-    id: String,
+    pub id: String,
     filters: Vec<Filter>,
     token_count: usize,
     document_count: usize,
@@ -98,5 +98,33 @@ impl Index {
             query.search_document(doc);
         }
         query.results()
+    }
+
+    pub fn serialize(&self) -> Vec<u8> {
+        rmp_serde::to_vec(&self).unwrap()
+    }
+
+    pub fn deserialize(bytes: Vec<u8>) -> Index {
+        rmp_serde::from_slice(&bytes).unwrap()
+    }
+}
+
+impl Document {
+    pub fn new() -> Document {
+        Document {
+            id: nanoid!(),
+            title: String::new(),
+            resource: String::new(),
+            metadata: String::new(),
+            index: BTreeMap::new(),
+            token_count: 0,
+        }
+    }
+    pub fn serialize(&self) -> Vec<u8> {
+        rmp_serde::to_vec(&self).unwrap()
+    }
+
+    pub fn deserialize(bytes: Vec<u8>) -> Document {
+        rmp_serde::from_slice(&bytes).unwrap()
     }
 }

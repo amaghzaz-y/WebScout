@@ -95,6 +95,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a3e2c3daef883ecc1b5d58c15adae93470a91d425f3532ba1695849656af3fc1"
 
 [[package]]
+name = "byteorder"
+version = "1.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
+
+[[package]]
 name = "bytes"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -197,6 +203,15 @@ name = "core-foundation-sys"
 version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
+
+[[package]]
+name = "crc32fast"
+version = "1.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b540bd8bc810d3885c6ea91e2018302f68baba2129ab3e88f32389ee9370880d"
+dependencies = [
+ "cfg-if 1.0.0",
+]
 
 [[package]]
 name = "criterion"
@@ -353,6 +368,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "fs2"
+version = "0.4.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9564fc758e15025b46aa6643b1b77d047d1a56a1aea6e01002ac0c7026876213"
+dependencies = [
+ "libc",
+ "winapi",
+]
+
+[[package]]
 name = "futures-channel"
 version = "0.3.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -389,6 +414,15 @@ dependencies = [
  "futures-task",
  "pin-project-lite",
  "pin-utils",
+]
+
+[[package]]
+name = "fxhash"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c31b6d751ae2c7f11320402d34e41349dd1016f8d5d45e48c4312bc8625af50c"
+dependencies = [
+ "byteorder",
 ]
 
 [[package]]
@@ -630,6 +664,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ef53942eb7bf7ff43a617b3e2c1c4a5ecf5944a7c1bc12d7ee39bbb15e5c1519"
 
 [[package]]
+name = "lock_api"
+version = "0.4.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1cc9717a20b1bb222f333e6a92fd32f7d8a18ddc5a3191a11af45dcbf4dcd16"
+dependencies = [
+ "autocfg",
+ "scopeguard",
+]
+
+[[package]]
 name = "log"
 version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -776,6 +820,37 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4d5d9eb14b174ee9aa2ef96dc2b94637a2d4b6e7cb873c7e171f0c20c6cf3eac"
 
 [[package]]
+name = "parking_lot"
+version = "0.11.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d17b78036a60663b797adeaee46f5c9dfebb86948d1255007a1d6be0271ff99"
+dependencies = [
+ "instant",
+ "lock_api",
+ "parking_lot_core",
+]
+
+[[package]]
+name = "parking_lot_core"
+version = "0.8.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "60a2cfe6f0ad2bfc16aefa463b497d5c7a5ecd44a23efa72aa342d90177356dc"
+dependencies = [
+ "cfg-if 1.0.0",
+ "instant",
+ "libc",
+ "redox_syscall 0.2.16",
+ "smallvec",
+ "winapi",
+]
+
+[[package]]
+name = "paste"
+version = "1.0.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9f746c4065a8fa3fe23974dd82f15431cc8d40779821001404d10d2e79ca7d79"
+
+[[package]]
 name = "percent-encoding"
 version = "2.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -905,6 +980,15 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
+version = "0.2.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb5a58c1855b4b6819d59012155603f0b22ad30cad752600aadfcb695265519a"
+dependencies = [
+ "bitflags",
+]
+
+[[package]]
+name = "redox_syscall"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "567664f262709473930a4bf9e51bf2ebf3348f2e748ccc50dea20646858f8f29"
@@ -964,6 +1048,28 @@ dependencies = [
  "wasm-bindgen-futures",
  "web-sys",
  "winreg",
+]
+
+[[package]]
+name = "rmp"
+version = "0.8.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44519172358fd6d58656c86ab8e7fbc9e1490c3e8f14d35ed78ca0dd07403c9f"
+dependencies = [
+ "byteorder",
+ "num-traits",
+ "paste",
+]
+
+[[package]]
+name = "rmp-serde"
+version = "1.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c5b13be192e0220b8afb7222aa5813cb62cc269ebb5cac346ca6487681d2913e"
+dependencies = [
+ "byteorder",
+ "rmp",
+ "serde",
 ]
 
 [[package]]
@@ -1105,6 +1211,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "sled"
+version = "0.34.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7f96b4737c2ce5987354855aed3797279def4ebf734436c6aa4552cf8e169935"
+dependencies = [
+ "crc32fast",
+ "crossbeam-epoch",
+ "crossbeam-utils",
+ "fs2",
+ "fxhash",
+ "libc",
+ "log",
+ "parking_lot",
+]
+
+[[package]]
+name = "smallvec"
+version = "1.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a507befe795404456341dfab10cef66ead4c041f62b8b11bbb92bffe5d0953e0"
+
+[[package]]
 name = "socket2"
 version = "0.4.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1134,7 +1262,7 @@ dependencies = [
  "autocfg",
  "cfg-if 1.0.0",
  "fastrand",
- "redox_syscall",
+ "redox_syscall 0.3.5",
  "rustix",
  "windows-sys 0.48.0",
 ]
@@ -1399,8 +1527,10 @@ dependencies = [
  "nanoid",
  "regex",
  "reqwest",
+ "rmp-serde",
  "rust-stemmers",
  "serde",
+ "sled",
  "wasm-bindgen",
  "whatlang",
 ]
