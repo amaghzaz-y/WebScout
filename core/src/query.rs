@@ -2,19 +2,16 @@ use alloc::{
     borrow::ToOwned,
     collections::BTreeMap,
     string::String,
-    vec::{self, Vec},
+    vec::{ Vec},
 };
-use bloomfilter::Bloom;
-use whatlang::Lang;
 
 use crate::{
     index::{Document, Filter},
-    parser::{FrequencyStats, Parser, Stem, Token},
+    parser::{Parser, Token},
     utils::standard_deviation,
 };
 
 pub struct Query {
-    language: Lang,
     query: Vec<String>,
     search: BTreeMap<String, Vec<Token>>,
     deviation_map: BTreeMap<String, f32>,
@@ -28,7 +25,6 @@ impl Query {
         tokens.sort();
         tokens.dedup();
         Query {
-            language: parser.get_language(),
             query: tokens,
             search: BTreeMap::new(),
             deviation_map: BTreeMap::new(),

@@ -1,9 +1,5 @@
 extern crate alloc;
-use alloc::{
-    rc::Rc,
-    string::{String, ToString},
-    sync::Arc,
-};
+use alloc::string::{String, ToString};
 use rust_stemmers::Algorithm;
 pub struct Stemmer {
     stemmer: rust_stemmers::Stemmer,
@@ -16,7 +12,7 @@ impl Stemmer {
             stemmer: rust_stemmers::Stemmer::create(Algorithm::English),
         }
     }
-
+    #[allow(dead_code)]
     pub fn set_lang(&mut self, lang: rust_stemmers::Algorithm) {
         self.stemmer = rust_stemmers::Stemmer::create(lang);
     }

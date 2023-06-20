@@ -1,5 +1,5 @@
 use crate::utils::text_to_hashset;
-use alloc::{sync::Arc, string::String};
+use alloc::{string::String};
 use hashbrown::HashSet;
 use lazy_static::lazy_static;
 mod arabic;

@@ -1,17 +1,13 @@
-#![allow(unused)]
 
 use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
-use alloc::rc::Rc;
 use alloc::string::{String, ToString};
-use alloc::sync::Arc;
 use alloc::vec::Vec;
 use bloomfilter::Bloom;
-use hashbrown::HashMap;
 use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 
-use crate::parser::{self, FrequencyStats, Token};
+use crate::parser::{self, FrequencyStats};
 use crate::query::Query;
 
 #[derive(Serialize, Deserialize)]
@@ -88,7 +84,7 @@ impl Index {
     }
 
     pub fn relevant_documents(&self, text: &str) -> Vec<String> {
-        let mut query = Query::new(text);
+        let query = Query::new(text);
         query.filter_query(&self.filters)
     }
 

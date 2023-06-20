@@ -1199,6 +1199,10 @@ dependencies = [
 [[package]]
 name = "server"
 version = "0.1.0"
+dependencies = [
+ "sled",
+ "webscout-core",
+]
 
 [[package]]
 name = "siphasher"
@@ -1523,7 +1527,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "webscout"
+name = "webscout-core"
 version = "0.1.0"
 dependencies = [
  "bloomfilter",
@@ -1538,7 +1542,6 @@ dependencies = [
  "rmp-serde",
  "rust-stemmers",
  "serde",
- "sled",
  "wasm-bindgen",
  "whatlang",
 ]

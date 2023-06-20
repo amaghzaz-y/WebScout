@@ -3,11 +3,8 @@ use crate::stopwords::is_stopword;
 use crate::utils;
 use alloc::borrow::ToOwned;
 use alloc::collections::BTreeMap;
-use alloc::rc::{self, Rc};
-use alloc::string::ToString;
 use alloc::{string::String, vec::Vec};
 use bloomfilter::Bloom;
-use hashbrown::HashMap;
 use serde::{Deserialize, Serialize};
 use whatlang::Lang;
 
@@ -16,11 +13,7 @@ pub struct Stem {
     pub value: String,
     position: usize,
 }
-impl Stem {
-    pub fn value(&self) -> String {
-        self.value.to_string()
-    }
-}
+impl Stem {}
 pub struct Token {
     pub value: String,
     pub frequency: usize,
@@ -116,7 +109,7 @@ impl Parser {
             .to_owned()
             .unwrap_or(Bloom::new_for_fp_rate(1000000, 0.1))
     }
-
+    #[allow(dead_code)]
     pub fn get_language(&self) -> Lang {
         self.language.to_owned()
     }
