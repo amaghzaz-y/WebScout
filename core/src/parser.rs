@@ -26,11 +26,13 @@ pub struct Token {
     pub frequency: usize,
     pub mean_position: usize,
 }
-#[derive(Serialize, Deserialize)]
+
+#[derive(Serialize, Deserialize, Clone)]
 pub struct FrequencyStats {
     pub frequency: usize,
     pub mean_position: usize,
 }
+
 pub struct Parser {
     bloom_filter: Option<Bloom<String>>,
     language: Lang,
@@ -66,7 +68,7 @@ impl Parser {
         self.bloom_filter = Some(bloom_filter);
         stems
     }
-
+    // parses the search query and removes stopwords
     pub fn parse_query(&mut self, query: &str) -> Vec<String> {
         let mut stems: Vec<String> = Vec::new();
         let mut stemmer = Stemmer::new();
@@ -114,6 +116,7 @@ impl Parser {
             .to_owned()
             .unwrap_or(Bloom::new_for_fp_rate(1000000, 0.1))
     }
+
     pub fn get_language(&self) -> Lang {
         self.language.to_owned()
     }

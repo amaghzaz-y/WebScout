@@ -47,3 +47,13 @@ pub fn text_to_hashset(text: &str) -> HashSet<String> {
         .map(|word| word.to_owned())
         .collect()
 }
+
+pub fn standard_deviation(data: &[f32]) -> f32 {
+    let n = data.len();
+    if n < 2 {
+        return 0.0;
+    }
+    let mean = data.iter().sum::<f32>() / n as f32;
+    let variance = data.iter().map(|x| (x - mean).powi(2)).sum::<f32>() / (n - 1) as f32;
+    variance.sqrt()
+}
