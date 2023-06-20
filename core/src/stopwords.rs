@@ -1,5 +1,5 @@
 use crate::utils::text_to_hashset;
-use alloc::sync::Arc;
+use alloc::{sync::Arc, string::String};
 use hashbrown::HashSet;
 use lazy_static::lazy_static;
 mod arabic;
@@ -19,22 +19,22 @@ mod spanish;
 mod swedish;
 mod turkish;
 lazy_static! {
-    static ref ARABIC: HashSet<Arc<str>> = text_to_hashset(arabic::AR_STOPWORDS);
-    static ref DANISH: HashSet<Arc<str>> = text_to_hashset(danish::DA_STOPWORDS);
-    static ref DUTCH: HashSet<Arc<str>> = text_to_hashset(dutch::NL_STOPWORDS);
-    static ref ENGLISH: HashSet<Arc<str>> = text_to_hashset(english::EN_STOPWORDS);
-    static ref FINNISH: HashSet<Arc<str>> = text_to_hashset(finnish::FI_STOPWORDS);
-    static ref FRENCH: HashSet<Arc<str>> = text_to_hashset(french::FR_STOPWORDS);
-    static ref GERMAN: HashSet<Arc<str>> = text_to_hashset(german::DE_STOPWORDS);
-    static ref GREEK: HashSet<Arc<str>> = text_to_hashset(greek::EL_STOPWORDS);
-    static ref HUNGARIAN: HashSet<Arc<str>> = text_to_hashset(hungarian::HU_STOPWORDS);
-    static ref ITALIAN: HashSet<Arc<str>> = text_to_hashset(italian::IT_STOPWORDS);
-    static ref PORTUGUESE: HashSet<Arc<str>> = text_to_hashset(portuguese::PT_STOPWORDS);
-    static ref ROMANIAN: HashSet<Arc<str>> = text_to_hashset(romanian::RO_STOPWORDS);
-    static ref RUSSIAN: HashSet<Arc<str>> = text_to_hashset(russian::RU_STOPWORDS);
-    static ref SPANISH: HashSet<Arc<str>> = text_to_hashset(spanish::ES_STOPWORDS);
-    static ref SWEDISH: HashSet<Arc<str>> = text_to_hashset(swedish::SV_STOPWORDS);
-    static ref TURKISH: HashSet<Arc<str>> = text_to_hashset(turkish::TR_STOPWORDS);
+    static ref ARABIC: HashSet<String> = text_to_hashset(arabic::AR_STOPWORDS);
+    static ref DANISH: HashSet<String> = text_to_hashset(danish::DA_STOPWORDS);
+    static ref DUTCH: HashSet<String> = text_to_hashset(dutch::NL_STOPWORDS);
+    static ref ENGLISH: HashSet<String> = text_to_hashset(english::EN_STOPWORDS);
+    static ref FINNISH: HashSet<String> = text_to_hashset(finnish::FI_STOPWORDS);
+    static ref FRENCH: HashSet<String> = text_to_hashset(french::FR_STOPWORDS);
+    static ref GERMAN: HashSet<String> = text_to_hashset(german::DE_STOPWORDS);
+    static ref GREEK: HashSet<String> = text_to_hashset(greek::EL_STOPWORDS);
+    static ref HUNGARIAN: HashSet<String> = text_to_hashset(hungarian::HU_STOPWORDS);
+    static ref ITALIAN: HashSet<String> = text_to_hashset(italian::IT_STOPWORDS);
+    static ref PORTUGUESE: HashSet<String> = text_to_hashset(portuguese::PT_STOPWORDS);
+    static ref ROMANIAN: HashSet<String> = text_to_hashset(romanian::RO_STOPWORDS);
+    static ref RUSSIAN: HashSet<String> = text_to_hashset(russian::RU_STOPWORDS);
+    static ref SPANISH: HashSet<String> = text_to_hashset(spanish::ES_STOPWORDS);
+    static ref SWEDISH: HashSet<String> = text_to_hashset(swedish::SV_STOPWORDS);
+    static ref TURKISH: HashSet<String> = text_to_hashset(turkish::TR_STOPWORDS);
 }
 
 pub fn is_stopword(lang: &whatlang::Lang, value: &str) -> bool {

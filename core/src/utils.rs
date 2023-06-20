@@ -1,4 +1,5 @@
 use alloc::{
+    borrow::ToOwned,
     rc::{self, Rc},
     string::{String, ToString},
     sync::Arc,
@@ -41,8 +42,8 @@ pub fn to_lower_alphanumeric(s: &str) -> String {
     result
 }
 
-pub fn text_to_hashset(text: &str) -> HashSet<Arc<str>> {
+pub fn text_to_hashset(text: &str) -> HashSet<String> {
     text.split_whitespace()
-        .map(|word| Arc::from(word))
+        .map(|word| word.to_owned())
         .collect()
 }
