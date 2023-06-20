@@ -71,7 +71,7 @@ impl Index {
         self.token_count += index.len();
         // return result
         Document {
-            id: id,
+            id,
             title: doc.title.to_string(),
             resource: doc
                 .resource
@@ -82,7 +82,7 @@ impl Index {
                 .to_owned()
                 .unwrap_or("metadata undefined".to_string()),
             token_count: index.len(),
-            index: index,
+            index,
         }
     }
 }
