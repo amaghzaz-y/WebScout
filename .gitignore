@@ -39,3 +39,5 @@ yarn-error.log*
 target
 pkg
 .vscode
+
+ws.db

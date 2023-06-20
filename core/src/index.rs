@@ -13,8 +13,8 @@ use crate::query::Query;
 pub struct Index {
     pub id: String,
     filters: Vec<Filter>,
-    token_count: usize,
-    document_count: usize,
+    pub token_count: usize,
+    pub document_count: usize,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -33,7 +33,7 @@ pub struct Filter {
     pub filter: Bloom<String>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct TextDocument {
     pub title: String,
     pub resource: Option<String>,
