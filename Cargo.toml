@@ -6,8 +6,7 @@ members = [
 	"admin"
 ]
 
-[profile.release]
+[profile.release.package.webscout-core]
 opt-level = 3
 debug = 0
 overflow-checks = false
-lto = true

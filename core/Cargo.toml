@@ -24,11 +24,6 @@ bloomfilter = {version = "1.0.9", features=["serde"]}
 nanoid = "0.4.0"
 rmp-serde = "1.1.1"
 
-[profile.release]
-opt-level = 3
-debug = 0
-overflow-checks = false
-lto = true
 
 [dev-dependencies]
 criterion = {version = "0.4.0", features= ["html_reports"]}
