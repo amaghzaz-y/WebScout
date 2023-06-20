@@ -12,6 +12,7 @@ use nanoid::nanoid;
 use serde::{Deserialize, Serialize};
 
 use crate::parser::{self, FrequencyStats, Token};
+use crate::query::Query;
 
 #[derive(Serialize, Deserialize)]
 pub struct Index {
@@ -84,5 +85,18 @@ impl Index {
             token_count: index.len(),
             index,
         }
+    }
+
+    pub fn relevant_documents(&self, text: &str) -> Vec<String> {
+        let mut query = Query::new(text);
+        query.filter_query(&self.filters)
+    }
+
+    pub fn search_query(&mut self, text: &str, doc: &Vec<Document>) -> Vec<(String, f32)> {
+        let mut query = Query::new(text);
+        for doc in doc {
+            query.search_document(doc);
+        }
+        query.results()
     }
 }

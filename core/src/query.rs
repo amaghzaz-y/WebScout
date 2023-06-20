@@ -37,9 +37,8 @@ impl Query {
     }
 
     // checks the bloom filter of each document and returns the top 10 most relevant ones
-    pub fn filter_query(&self, query: &str, filters: &Vec<Filter>) -> Vec<String> {
+    pub fn filter_query(&self, filters: &Vec<Filter>) -> Vec<String> {
         let mut freq_map: BTreeMap<String, usize> = BTreeMap::new();
-
         for token in &self.query {
             for filter in filters {
                 if filter.filter.check(&token.to_owned().into()) {
@@ -74,10 +73,9 @@ impl Query {
             }
         }
         self.search.insert(doc.id.clone(), stats);
-        self.normalize();
     }
     // normalizes the search collection
-    pub fn normalize(&mut self) {
+    fn normalize(&mut self) {
         for (doc_id, stats) in &self.search {
             let mut means = Vec::with_capacity(stats.len());
             for stat in stats {
@@ -89,7 +87,8 @@ impl Query {
         }
     }
     // computes the scores for each document, returns the scores sorted
-    pub fn results(&self) -> Vec<(String, f32)> {
+    pub fn results(&mut self) -> Vec<(String, f32)> {
+        self.normalize();
         let mut scores: Vec<(String, f32)> = Vec::new();
         for (doc_id, stats) in &self.search {
             let mut freq_ratio = 0.0;
