@@ -31,7 +31,7 @@ pub async fn api_index(json: web::Json<TextDocument>, data: web::Data<AppState>)
 
 #[get("/count")]
 pub async fn api_count(data: web::Data<AppState>) -> impl Responder {
-    let doc = data.index.lock().unwrap().document_count;
+    let doc = data.index.lock().unwrap().document_count();
     format!("{}", doc)
 }
 
@@ -125,6 +125,6 @@ impl KV {
 
     pub fn put_index(&self, index: &Index) {
         let bytes = index.serialize();
-        self.db.insert(index.id.clone(), bytes).unwrap();
+        self.db.insert(index.id(), bytes).unwrap();
     }
 }

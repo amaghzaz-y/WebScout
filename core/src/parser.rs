@@ -14,13 +14,15 @@ pub struct Stem {
     position: usize,
 }
 impl Stem {}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Token {
     pub value: String,
     pub frequency: usize,
     pub mean_position: usize,
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct FrequencyStats {
     pub frequency: usize,
     pub mean_position: usize,
@@ -105,9 +107,7 @@ impl Parser {
     }
 
     pub fn get_filter(&self) -> Bloom<String> {
-        self.bloom_filter
-            .to_owned()
-            .unwrap_or(Bloom::new_for_fp_rate(1000000, 0.1))
+        self.bloom_filter.to_owned().unwrap()
     }
     #[allow(dead_code)]
     pub fn get_language(&self) -> Lang {

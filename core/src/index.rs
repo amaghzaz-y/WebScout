@@ -9,15 +9,15 @@ use serde::{Deserialize, Serialize};
 use crate::parser::{self, FrequencyStats};
 use crate::query::Query;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Index {
-    pub id: String,
+    id: String,
     filters: Vec<Filter>,
-    pub token_count: usize,
-    pub document_count: usize,
+    token_count: usize,
+    document_count: usize,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Document {
     pub id: String,
     pub title: String,
@@ -27,7 +27,7 @@ pub struct Document {
     pub token_count: usize,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Filter {
     pub id: String,
     pub filter: Bloom<String>,
@@ -101,6 +101,21 @@ impl Index {
 
     pub fn deserialize(bytes: Vec<u8>) -> Index {
         rmp_serde::from_slice(&bytes).unwrap()
+    }
+    pub fn id(&self) -> String {
+        self.id.to_owned()
+    }
+
+    pub fn token_count(&self) -> usize {
+        self.token_count.to_owned()
+    }
+
+    pub fn document_count(&self) -> usize {
+        self.document_count.to_owned()
+    }
+
+    pub fn filters(&self) -> Vec<Filter> {
+        self.filters.clone()
     }
 }
 

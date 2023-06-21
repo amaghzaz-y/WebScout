@@ -6,6 +6,7 @@ use crate::{
     utils::standard_deviation,
 };
 
+#[derive(Clone, Debug)]
 pub struct Query {
     query: Vec<String>,
     search: BTreeMap<String, Vec<Token>>,
@@ -32,8 +33,11 @@ impl Query {
         let mut freq_map: BTreeMap<String, usize> = BTreeMap::new();
         for token in &self.query {
             for filter in filters {
-                if filter.filter.check(&token.to_owned().into()) {
-                    freq_map.entry(filter.id.to_owned()).and_modify(|x| *x += 1);
+                if filter.filter.check(&token) {
+                    freq_map
+                        .entry(filter.id.to_owned())
+                        .and_modify(|x| *x += 1)
+                        .or_insert(1);
                 }
             }
         }
@@ -94,5 +98,90 @@ impl Query {
             scores.insert(doc_id.clone(), score);
         }
         scores
+    }
+}
+
+#[allow(unused)]
+#[cfg(test)]
+mod tests {
+    use crate::index::{Index, TextDocument};
+
+    use super::*;
+    static TEXT_EN: &str = "I would suggest to do a side project in Rust first 
+                        before jump right in (Some caveat is came from cf limitation 
+                        in Rust, but it will worth it in the long run 
+                        especially you can share logic/struct anywhere as wasm via npm).
+                        Here's my proof that's Rust is easy to learn ";
+    static TEXT_FR: &str = "Le terme charcuterie désigne couramment de nombreuses préparations
+                        alimentaires à base de viande et d'abats, crues ou cuites. 
+                        Elles proviennent majoritairement,
+                        mais pas exclusivement, du porc, dont presque toutes les 
+                        parties peuvent être utilisées, 
+                        et ont souvent le sel comme agent de conservation
+                        (salage à sec ou par saumurage).";
+
+    #[test]
+    fn filter_query_en() {
+        let mut idx = Index::new();
+        let en_doc = TextDocument {
+            title: "Why Rust is better ?".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_EN.to_owned(),
+        };
+        let fr_doc = TextDocument {
+            title: "La charcuterie".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_FR.to_owned(),
+        };
+        let en_doc = idx.index_text(&en_doc);
+        let fr_doc = idx.index_text(&fr_doc);
+        let mut q = Query::new("I Rust First");
+        let r = q.filter_query(&idx.filters());
+        assert_eq!(1, r.len());
+    }
+    #[test]
+    fn filter_query_fr() {
+        let mut idx = Index::new();
+        let en_doc = TextDocument {
+            title: "Why Rust is better ?".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_EN.to_owned(),
+        };
+        let fr_doc = TextDocument {
+            title: "La charcuterie".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_FR.to_owned(),
+        };
+        let en_doc = idx.index_text(&en_doc);
+        let fr_doc = idx.index_text(&fr_doc);
+        let mut q = Query::new("Viande du porc");
+        let r = q.filter_query(&idx.filters());
+        assert_eq!(1, r.len());
+    }
+
+    #[test]
+    fn filter_query_en_fr() {
+        let mut idx = Index::new();
+        let en_doc = TextDocument {
+            title: "Why Rust is better ?".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_EN.to_owned(),
+        };
+        let fr_doc = TextDocument {
+            title: "La charcuterie".to_owned(),
+            resource: None,
+            metadata: None,
+            text: TEXT_FR.to_owned(),
+        };
+        let en_doc = idx.index_text(&en_doc);
+        let fr_doc = idx.index_text(&fr_doc);
+        let mut q = Query::new("Viande du porc, et Rust is the best");
+        let r = q.filter_query(&idx.filters());
+        assert_eq!(2, r.len());
     }
 }
