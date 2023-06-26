@@ -93,4 +93,11 @@ mod tests {
         let text = "bonjour, comment vas-tu ?";
         assert_eq!(whatlang::Lang::Fra, stemmer.detect_lang(text))
     }
+
+    #[test]
+    fn detect_lang_arabic() {
+        let mut stemmer = Stemmer::new();
+        let text = "وزارة الأوقاف والشؤون الإسلامية تعلن عيد الأضحى يوم 29 يونيو في المغرب";
+        assert_eq!(whatlang::Lang::Ara, stemmer.detect_lang(text))
+    }
 }
