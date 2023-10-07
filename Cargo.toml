@@ -1,12 +1,10 @@
 [workspace]
 members = [
-    "core",
-	"server",
-	"worker",
-	"admin"
+  "core",
+  "worker",
 ]
 
 [profile.release.package.webscout-core]
-opt-level = 3
 debug = 0
+opt-level = 3
 overflow-checks = false
