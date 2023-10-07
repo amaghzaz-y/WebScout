@@ -8,10 +8,10 @@ use crate::{
 
 #[derive(Clone, Debug)]
 pub struct Query {
-    query: Vec<String>,
+    query: Vec<String>, // relevant stemmed tokens
     search: BTreeMap<String, Vec<Token>>,
     deviation_map: BTreeMap<String, f32>,
-    max_freq_map: BTreeMap<String, usize>,
+    max_freq_map: BTreeMap<String, usize>, // max freq for each token
 }
 
 impl Query {
@@ -125,18 +125,18 @@ mod tests {
         let mut idx = Index::new();
         let en_doc = TextDocument {
             title: "Why Rust is better ?".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_EN.to_owned(),
         };
         let fr_doc = TextDocument {
             title: "La charcuterie".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_FR.to_owned(),
         };
-        let en_doc = idx.index_text(&en_doc);
-        let fr_doc = idx.index_text(&fr_doc);
+        idx.index_text(&en_doc);
+        idx.index_text(&fr_doc);
         let mut q = Query::new("I Rust First");
         let r = q.filter_query(&idx.filters());
         assert_eq!(1, r.len());
@@ -146,13 +146,13 @@ mod tests {
         let mut idx = Index::new();
         let en_doc = TextDocument {
             title: "Why Rust is better ?".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_EN.to_owned(),
         };
         let fr_doc = TextDocument {
             title: "La charcuterie".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_FR.to_owned(),
         };
@@ -168,13 +168,13 @@ mod tests {
         let mut idx = Index::new();
         let en_doc = TextDocument {
             title: "Why Rust is better ?".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_EN.to_owned(),
         };
         let fr_doc = TextDocument {
             title: "La charcuterie".to_owned(),
-            resource: None,
+            url: None,
             metadata: None,
             text: TEXT_FR.to_owned(),
         };

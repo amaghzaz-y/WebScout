@@ -65,7 +65,7 @@ mod tests {
 
     #[test]
     fn english_true_stopword() {
-        assert_eq!(true, is_stopword(&whatlang::Lang::Eng, "you"))
+        assert_eq!(true, is_stopword(&whatlang::Lang::Eng, "which"))
     }
     #[test]
     fn english_false_stopword() {

@@ -21,7 +21,7 @@ pub struct Index {
 pub struct Document {
     pub id: String,
     pub title: String,
-    pub resource: String,
+    pub url: String,
     pub metadata: String,
     pub index: BTreeMap<String, FrequencyStats>,
     pub token_count: usize,
@@ -36,7 +36,7 @@ pub struct Filter {
 #[derive(Clone, Serialize, Deserialize)]
 pub struct TextDocument {
     pub title: String,
-    pub resource: Option<String>,
+    pub url: Option<String>,
     pub metadata: Option<String>,
     pub text: String,
 }
@@ -69,8 +69,8 @@ impl Index {
         Document {
             id,
             title: doc.title.to_string(),
-            resource: doc
-                .resource
+            url: doc
+                .url
                 .to_owned()
                 .unwrap_or("resource undefined".to_string()),
             metadata: doc
@@ -124,7 +124,7 @@ impl Document {
         Document {
             id: nanoid!(),
             title: String::new(),
-            resource: String::new(),
+            url: String::new(),
             metadata: String::new(),
             index: BTreeMap::new(),
             token_count: 0,

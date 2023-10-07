@@ -40,7 +40,7 @@ impl Parser {
             language: Lang::Eng,
         }
     }
-    //Bloom::new_for_fp_rate(1000000, 0.1)
+    // Bloom::new_for_fp_rate(1000000, 0.1)
     // parses text, stems the words, removes stopwords
     pub fn parse_text(&mut self, text: &str) -> Vec<Stem> {
         let mut stems: Vec<Stem> = Vec::new();
